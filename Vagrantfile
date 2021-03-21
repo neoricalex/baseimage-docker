@@ -56,6 +56,16 @@ Vagrant.configure("2") do |config|
 		vb.memory	= "4096"
 		vb.cpus   	= "3"
 	end
+
+	config.vm.provider :libvirt do |libvirt|
+		libvirt.driver = "kvm"
+		# libvirt.host = "localhost"
+		libvirt.connect_via_ssh = false
+		libvirt.username = "neo"
+		#libvirt.password = "neoricalex"
+		libvirt.storage_pool_name = "default"
+		libvirt.default_prefix = ''
+	end
 	#
 	# View the documentation for the provider you are using for more
 	# information on available options.
