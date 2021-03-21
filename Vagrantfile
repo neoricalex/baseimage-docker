@@ -45,27 +45,47 @@ Vagrant.configure("2") do |config|
 	# backing providers for Vagrant. These expose provider-specific options.
 	# Example for VirtualBox:
 	#
-	config.vm.provider "virtualbox" do |vb|
+	#config.vm.provider "virtualbox" do |vb|
 	#   # Display the VirtualBox GUI when booting the machine
 	#   vb.gui = true
 	#
-		vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
-		vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
-		vb.customize ["modifyvm", :id, "--nestedpaging", "on"]
-		vb.name		= "VPS_DEV"
-		vb.memory	= "4096"
-		vb.cpus   	= "3"
-	end
+	#	vb.customize ["modifyvm", :id, "--graphicscontroller", "vmsvga"]
+	#	vb.customize ["modifyvm", :id, "--nested-hw-virt", "on"]
+	#	vb.customize ["modifyvm", :id, "--nestedpaging", "on"]
+	#	vb.name		= "VPS_DEV"
+	#	vb.memory	= "4096"
+	#	vb.cpus   	= "3"
+	#end
 
-	config.vm.provider :libvirt do |libvirt|
-		libvirt.driver = "kvm"
-		# libvirt.host = "localhost"
-		libvirt.connect_via_ssh = false
-		libvirt.username = "neo"
-		#libvirt.password = "neoricalex"
-		libvirt.storage_pool_name = "default"
-		libvirt.default_prefix = ''
-	end
+    config.vm.define :VPS_DEV do |vps|
+        # Domain Specific Options
+        #
+        # See README for more info.
+        #
+        vps.vm.provider :libvirt do |domain|
+            domain.memory = 4096
+            domain.cpus = 3
+        end
+
+        # Interfaces for VM
+        # 
+        # Networking features in the form of `config.vm.network`
+        #
+        #test_vm.vm.network :private_network, :ip => '10.20.30.40'
+        #test_vm.vm.network :public_network, :ip => '10.20.30.41'
+        #end
+
+        config.vm.provider :libvirt do |libvirt|
+            libvirt.driver = "kvm"
+            # libvirt.host = "localhost"
+            libvirt.connect_via_ssh = false
+            libvirt.username = "neo"
+            #libvirt.password = "neoricalex"
+            libvirt.storage_pool_name = "default"
+            libvirt.default_prefix = ''
+        end
+
+    end
 	#
 	# View the documentation for the provider you are using for more
 	# information on available options.
