@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
   
 	config.vm.provision :shell,
 		path: "vagrant-libs/bootstrap.sh"
-
+    end
     config.vm.synced_folder Dir.pwd, '/vagrant', type: 'rsync', 
     disabled: false, 
     accessmode: "squash", 
