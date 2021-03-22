@@ -28,6 +28,7 @@ vps: build
 	docker run --rm --name neoricalex $(NAME)
 
 build:
+	chmod +x nfdos/iniciar.sh
 	./build.sh
 	sudo docker build --no-cache -t $(NAME):$(VERSION_ARG) $(BUILD_ARG) --build-arg QEMU_ARCH=$(QEMU_ARCH) --platform $(PLATFORM) --rm nfdos
 
