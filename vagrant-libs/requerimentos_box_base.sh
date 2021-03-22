@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "==> Atualizar os repositórios do $HOSTNAME ..."
-sudo apt update
+sudo apt update && sudo apt upgrade -y
 
 echo "==> Instalar os pacotes base no $HOSTNAME..."
 sudo apt-get install -y \

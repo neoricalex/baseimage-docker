@@ -66,6 +66,7 @@ fi
 echo "==> Iniciando a box..."
 iniciar_box(){
     VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant up
+    vagrant reload
     vagrant ssh <<EOF
 #!/bin/bash
 
