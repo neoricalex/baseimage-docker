@@ -1,5 +1,8 @@
 #!/bin/bash
 
+mkdir -p /pasta_compartilhada
+mount.vboxsf -o "uid=1000,gid=1000,dev,exec,rw" pasta_compartilhada /pasta_compartilhada
+
 echo "==> Atualizar os repositórios do $HOSTNAME ..."
 sudo apt update && sudo apt upgrade -y
 
