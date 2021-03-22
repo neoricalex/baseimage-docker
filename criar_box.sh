@@ -37,6 +37,16 @@ then
         libvirt-dev qemu-kvm qemu-utils qemu-user-static ruby-dev \
         ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev
 
+    if ! command -v vagrant &> /dev/null;
+    then
+        instalar_vagrant
+    else
+        sudo apt purge vagrant* -y
+        sudo apt autoremove -y
+        sleep 1
+        instalar_vagrant
+    fi
+
     if ! command -v vboxmanage &> /dev/null;
     then
         instalar_virtualbox
@@ -46,16 +56,6 @@ then
         sudo apt autoremove -y
         sleep 1
         instalar_virtualbox
-    fi
-
-    if ! command -v vagrant &> /dev/null;
-    then
-        instalar_vagrant
-    else
-        sudo apt purge vagrant* -y
-        sudo apt autoremove -y
-        sleep 1
-        instalar_vagrant
     fi
 
     echo "==> Removendo pacotes do Ubuntu desnecessários"
@@ -72,7 +72,6 @@ iniciar_box(){
 cd /vagrant
 make iso
 cd ..
-
 EOF
 }
 
