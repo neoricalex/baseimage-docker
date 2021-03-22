@@ -1,7 +1,6 @@
 #!/bin/bash
 
-if ! command -v vboxmanage &> /dev/null
-then
+instalar_virtualbox(){
     echo "==> Atualizar os repositórios..."
     sudo apt update
 
@@ -15,6 +14,15 @@ then
     sudo vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c
     rm Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack
 
+    echo "==> Removendo pacotes do Ubuntu desnecessários"
+    sudo apt autoremove -y
+
+}
+
+instalar_vagrant(){
+    echo "==> Atualizar os repositórios..."
+    sudo apt update
+
     echo "==> Download Vagrant & Instalar"
     wget -nv https://releases.hashicorp.com/vagrant/2.2.9/vagrant_2.2.9_x86_64.deb
     sudo dpkg -i vagrant_2.2.9_x86_64.deb
@@ -26,7 +34,26 @@ then
     vagrant plugin install vagrant-mutate
 
     echo "==> Removendo pacotes do Ubuntu desnecessários"
-    apt autoremove -y
+    sudo apt autoremove -y
+}
+
+if [ ! -f ".requerimentos_ok" ]; then
+    if ! command -v vboxmanage &> /dev/null
+    then
+        instalar_virtualbox
+    else
+        sudo apt purge virtualbox* -y
+        instalar_virtualbox
+    fi
+
+    if ! command -v vagrant &> /dev/null
+    then
+        instalar_vagrant
+    else
+        sudo apt purge vagrant* -y
+        instalar_vagrant
+    fi
+    touch .requerimentos_ok
 fi
 
 echo "==> Iniciando a box..."
