@@ -27,7 +27,8 @@ all: vps
 vps: 
 
 iso:
-	@echo "Parece bom!"
+	chmod +x criar_iso.sh
+	./criar_iso.sh
 
 box:
 	chmod +x criar_box.sh

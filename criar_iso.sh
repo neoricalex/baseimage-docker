@@ -10,6 +10,8 @@ export NFDOS_ROOT=$NFDOS_HOME/core
 export NFDOS_ROOTFS=$NFDOS_ROOT/rootfs
 export NFDOS_DISCO=$NFDOS_ROOT/nfdos.img
 
+echo "Iniciando a criação da imagem ISO do NFDOS $NFDOS_VERSAO ..."
+
 echo "Atualizar repositórios e instalar requerimentos..."
 sudo apt update
 sudo apt install -y \
