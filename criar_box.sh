@@ -72,7 +72,7 @@ iniciar_box(){
     VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant ssh <<EOF
 #!/bin/bash
 
-ls /vagrant
+cd /vagrant
 make iso
 cd ..
 EOF
