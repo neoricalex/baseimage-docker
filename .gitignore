@@ -4,6 +4,8 @@
 *.tar.gz
 *.log
 
+.requerimentos.box
+
 nfdos/core/image
 nfdos/core/rootfs
 nfdos/core/nfdos.img
