@@ -12,8 +12,8 @@ Vagrant.configure("2") do |config|
   
 	# Every Vagrant development environment requires a box. You can search for
 	# boxes at https://atlas.hashicorp.com/search.
-	config.vm.box = "ubuntu/bionic64"
-	config.disksize.size = '50GB'
+	#config.vm.box = "ubuntu/bionic64"
+	#config.disksize.size = '50GB'
 	config.vm.define 'VPS_DEV'
   
 	# Disable automatic box update checking. If you disable this, then
@@ -58,6 +58,9 @@ Vagrant.configure("2") do |config|
 	#end
 
     config.vm.define :VPS_DEV do |vps|
+		vps.vm.box = "ubuntu/bionic64"
+		vps.disksize.size = '50GB'
+
         # Domain Specific Options
         #
         # See README for more info.
@@ -75,7 +78,7 @@ Vagrant.configure("2") do |config|
         #test_vm.vm.network :public_network, :ip => '10.20.30.41'
         #end
 
-        config.vm.provider :libvirt do |libvirt|
+        vps.vm.provider :libvirt do |libvirt|
             libvirt.driver = "kvm"
             # libvirt.host = "localhost"
             libvirt.connect_via_ssh = false
