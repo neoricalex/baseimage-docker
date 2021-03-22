@@ -13,11 +13,6 @@ cd ..
 EOF
 }
 
-if ! vagrant box list | grep "libvirt" > /dev/null; then
-    echo "[DEBUG] O ubuntu/bionic64 libvirt não existe. Criando ele..."
-    vagrant box add ubuntu/bionic64
-    vagrant mutate ubuntu/bionic64 libvirt
-fi
 if vagrant status | grep "not created" > /dev/null; then
     iniciar_vps
 elif vagrant status | grep "is running" > /dev/null; then
