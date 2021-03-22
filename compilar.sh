@@ -6,6 +6,7 @@ iniciar_vps(){
 #!/bin/bash
 
 pwd
+ls
 
 EOF
 }
