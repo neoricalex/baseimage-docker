@@ -10,7 +10,7 @@ sudo apt install -y virtualbox-guest-additions-iso
 
 echo "==> Instalar o Extension Pack do VirtualBox"
 wget https://download.virtualbox.org/virtualbox/6.1.18/Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack
-vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c
+sudo vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c
 rm Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack
 
 echo "==> Download Vagrant & Instalar"
