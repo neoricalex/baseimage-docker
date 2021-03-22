@@ -5,11 +5,6 @@ iniciar_vps(){
     vagrant ssh <<EOF
 #!/bin/bash
 ls
-cd /vagrant
-
-make vps
-
-cd ..
 EOF
 }
 
