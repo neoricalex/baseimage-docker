@@ -37,8 +37,8 @@ fi
 echo "Checkando se a $NFDOS_HOME existe"
 if [ ! -d "$NFDOS_HOME" ]; then
     mkdir -p $NFDOS_HOME
-    mkdir -p $NFDOS_HOME/base
     mkdir -p $NFDOS_HOME/core
+    mkdir -p $NFDOS_HOME/desktop
 fi
 
 echo "Checkando se a $NFDOS_ROOT/nfdos.iso existe"
