@@ -64,9 +64,11 @@ then
 fi
 
 echo "==> Iniciando a box..."
-iniciar_box(){
+provisionar_box(){
     VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant up
     vagrant reload
+}
+iniciar_box(){
     vagrant ssh <<EOF
 #!/bin/bash
 
@@ -77,14 +79,9 @@ EOF
 }
 
 if vagrant status | grep "not created" > /dev/null; then
+    provisionar_box
     iniciar_box
 elif vagrant status | grep "is running" > /dev/null; then
-    echo "[DEBUG] O VPS_DEV existe e está ligado. Destruir e começar de novo?"
-    vagrant destroy
-    iniciar_box
-elif vagrant status | grep "poweroff" > /dev/null; then
-    echo "[DEBUG] O VPS_DEV existe mas está desligado. Destruir e começar de novo..."
-    vagrant destroy -f
     iniciar_box
 else
     echo "[DEBUG] O VPS_DEV existe mas está com um status diferente..."
