@@ -123,7 +123,7 @@ fi
 usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
 if [ "$usuario" == "neo@desktop" ]; 
 then
-	if [ $(vagrant cloud search neoricalex/ubuntu) | grep "No results found" > /dev/null ]; then
+	if [ vagrant cloud search neoricalex/ubuntu | grep "No results found" > /dev/null ]; then
 		vagrant cloud auth login
 		#vagrant cloud publish \
 		#--box-version $NFDOS_VERSAO \
