@@ -38,7 +38,7 @@
           "{{user `cpus`}}"
         ]
       ],
-      "output_directory": "libvirt",
+      "output_directory": "vagrant/libvirt",
       "shutdown_command": "echo '{{user `ssh_password`}}' | sudo -S shutdown -P now",
       "ssh_pty": "true",
       "ssh_password": "{{user `ssh_password`}}",
