@@ -102,6 +102,7 @@ instalar_requerimentos_para_rodar_vps(){
 		#echo "==> A box existe no $HOSTNAME"
 
 	fi
+	echo "==> Os requerimentos para rodar o VPS_DEV foram instalados."
 }
 
 instalar_requerimentos_para_rodar_vps
@@ -122,7 +123,7 @@ fi
 usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
 if [ "$usuario" == "neo@desktop" ]; 
 then
-	if vagrant cloud search neoricalex/ubuntu | grep "No results found" > /dev/null; then
+	if [ $(vagrant cloud search neoricalex/ubuntu) | grep "No results found" > /dev/null ]; then
 		vagrant cloud auth login
 		#vagrant cloud publish \
 		#--box-version $NFDOS_VERSAO \
