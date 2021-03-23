@@ -76,25 +76,24 @@ instalar_requerimentos_para_rodar_vps(){
 		touch .requerimentos.box
 
 		echo "==> Checkando se a box neoricalex/ubuntu existe localmente no $HOSTNAME ..."
-		if ! vagrant box list | grep "neoricalex/ubuntu" > /dev/null; 
+		if [ ! vagrant box list | grep "neoricalex/ubuntu"  > /dev/null ] ; 
 		then
 			echo "==> Checkando se o download da box já foi feito..."
-			if [ ! -f "../boxes/virtualbox.box" ]; 
+			if [ ! -f "vagrant-libs/virtualbox.box" ]; 
 			then
 				echo "Iniciando o download..."
-				cd ../boxes/
+				cd vagrant-libs
 				wget https://vagrantcloud.com/ubuntu/boxes/focal64/versions/20210320.0.0/providers/virtualbox.box \
 					-q --show-progress \
 					--progress=bar:force:noscroll
-				cd ../vps
+				cd ..
 			fi
 			echo "==> O download da box já foi feito."
 
-			vagrant box add \
-				--provider "virtualbox" \
+			vagrant box add --provider "virtualbox" \
 				--box-version "0.0.1" \
 				--name "neoricalex/ubuntu" \
-				../boxes/virtualbox.box
+				vagrant-libs/virtualbox.box
 
 		fi
 		echo "==> A box existe no $HOSTNAME"
@@ -118,17 +117,17 @@ else
 fi
 
 usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
-if [ "$usuario" == "neo@desktop" ]; then
-
+if [ "$usuario" == "neo@desktop" ]; 
+then
 	if vagrant cloud search neoricalex/ubuntu | grep "No results found" > /dev/null; then
-		#vagrant cloud auth login
-		vagrant cloud publish \
-		--box-version $NFDOS_VERSAO \
-		--release \
-		--short-description "An Ubuntu-based box for developing an Ubuntu-based GNU/Linux distribution from scratch, coded in Portuguese Language" \
-		--version-description "Versão inicial" \
-		neoricalex/ubuntu $NFDOS_VERSAO virtualbox \
-		nfdos/desktop/vagrant/NFDOS-$NFDOS_VERSAO.box # --force --debug
-		#vagrant cloud auth logout
+		vagrant cloud auth login
+		#vagrant cloud publish \
+		#--box-version $NFDOS_VERSAO \
+		#--release \
+		#--short-description "An Ubuntu-based box for developing an Ubuntu-based GNU/Linux distribution from scratch, coded in Portuguese Language" \
+		#--version-description "Versão inicial" \
+		#neoricalex/ubuntu $NFDOS_VERSAO virtualbox \
+		#nfdos/desktop/vagrant/NFDOS-$NFDOS_VERSAO.box # --force --debug
+		vagrant cloud auth logout
 	fi
 fi
