@@ -11,6 +11,7 @@ nfdos/core/rootfs
 nfdos/core/nfdos.img
 nfdos/core/nfdos.iso
 
+nfdos/desktop/libvirt
 nfdos/desktop/packer_cache
 nfdos/desktop/vagrant
 nfdos/desktop/virtualbox
