@@ -34,7 +34,9 @@ cd /vagrant
 make iso
 cd ..
 EOF
+
 }
+
 instalar_requerimentos_para_rodar_vps(){
 	echo "==> Instalar os requerimentos para rodar o VPS_DEV..."
 	if [ ! -f ".requerimentos.box" ]; 
@@ -45,20 +47,11 @@ instalar_requerimentos_para_rodar_vps(){
 		echo "==> Instalar o Linux/Ubuntu base..."
 		sudo apt-get install linux-generic linux-headers-`uname -r` ubuntu-minimal dkms -y
 
-		echo "==> Instalar libvrt & KVM" # REF: https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml
+		echo "==> Instalar libvrt & KVM" 
+		# REF: https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml
 		sudo apt install -y bridge-utils dnsmasq-base ebtables libvirt-daemon-system libvirt-clients \
 			libvirt-dev qemu-kvm qemu-utils qemu-user-static ruby-dev \
 			ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev
-
-		if ! command -v vagrant &> /dev/null;
-		then
-			instalar_vagrant
-		else
-			sudo apt purge vagrant* -y
-			sudo apt autoremove -y
-			sleep 1
-			instalar_vagrant
-		fi
 
 		if ! command -v vboxmanage &> /dev/null;
 		then
@@ -71,12 +64,22 @@ instalar_requerimentos_para_rodar_vps(){
 			instalar_virtualbox
 		fi
 
+		if ! command -v vagrant &> /dev/null;
+		then
+			instalar_vagrant
+		else
+			sudo apt purge vagrant* -y
+			sudo apt autoremove -y
+			sleep 1
+			instalar_vagrant
+		fi
+
 		echo "==> Removendo pacotes do Ubuntu desnecessários"
 		sudo apt autoremove -y
 		touch .requerimentos.box
 
 		echo "==> Checkando se a box neoricalex/ubuntu existe localmente no $HOSTNAME ..."
-		if [ ! vagrant box list | grep "neoricalex/ubuntu"  > /dev/null ] ; 
+		if ! vagrant box list | grep "neoricalex/ubuntu" > /dev/null; 
 		then
 			echo "==> Checkando se o download da box já foi feito..."
 			if [ ! -f "vagrant-libs/virtualbox.box" ]; 
@@ -96,6 +99,7 @@ instalar_requerimentos_para_rodar_vps(){
 				vagrant-libs/virtualbox.box
 
 		fi
+		
 		echo "==> A box existe no $HOSTNAME"
 
 	fi
