@@ -23,21 +23,6 @@ instalar_vagrant(){
     vagrant plugin install vagrant-mutate
 }
 checkar_vps(){
-	echo "==> Checkando se a box neoricalex/ubuntu existe localmente no $HOSTNAME ..."
-	if vagrant cloud search neoricalex/ubuntu | grep "No results found" > /dev/null; then
-		echo "==> Checkando se o download da box já foi feito..."
-		if [ ! -f "vagrant-libs/virtualbox.box" ]; 
-		then
-			echo "Iniciando o download..."
-			cd vagrant-libs
-			wget https://vagrantcloud.com/ubuntu/boxes/focal64/versions/20210320.0.0/providers/virtualbox.box \
-				-q --show-progress \
-				--progress=bar:force:noscroll
-			cd ..
-		fi
-		echo "==> O download da box já foi feito."
-	fi
-	echo "==> A box existe no $HOSTNAME"
 }
 provisionar_vps(){
     VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant up
@@ -91,6 +76,30 @@ instalar_requerimentos_para_rodar_vps(){
 		echo "==> Removendo pacotes do Ubuntu desnecessários"
 		sudo apt autoremove -y
 		touch .requerimentos.box
+
+		echo "==> Checkando se a box neoricalex/ubuntu existe localmente no $HOSTNAME ..."
+		if ! vagrant box list | grep "neoricalex/ubuntu" > /dev/null; then
+			echo "==> Checkando se o download da box já foi feito..."
+			if [ ! -f "../boxes/virtualbox.box" ]; 
+			then
+				echo "Iniciando o download..."
+				cd vagrant-libs
+				wget https://vagrantcloud.com/ubuntu/boxes/focal64/versions/20210320.0.0/providers/virtualbox.box \
+					-q --show-progress \
+					--progress=bar:force:noscroll
+				cd ..
+			fi
+			echo "==> O download da box já foi feito."
+
+			vagrant box add \
+				--provider virtualbox \
+				--box-version "0.0.1" \
+				--name neoricalex/ubuntu \
+				../boxes/virtualbox.box
+
+		fi
+		echo "==> A box existe no $HOSTNAME"
+
 	fi
 }
 
