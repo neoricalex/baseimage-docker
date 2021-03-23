@@ -17,4 +17,7 @@ sudo apt-get install -y \
     autoconf \
     build-essential \
     make \
-    virtualbox virtualbox-guest-dkms virtualbox-guest-additions-iso
+    virtualbox virtualbox-guest-dkms virtualbox-guest-additions-iso \
+	bridge-utils dnsmasq-base ebtables libvirt-daemon-system libvirt-clients \
+    libvirt-dev qemu-kvm qemu-utils ruby-dev \
+    ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev	
