@@ -99,7 +99,7 @@ instalar_requerimentos_para_rodar_vps(){
 				vagrant-libs/virtualbox.box
 
 		fi
-		
+
 		echo "==> A box existe no $HOSTNAME"
 
 	fi
@@ -135,6 +135,3 @@ then
 		vagrant cloud auth logout
 	fi
 fi
-
-echo "Parece bom"
-exit

@@ -96,3 +96,5 @@ then
 else
     echo "A versão $VERSAO_BOX_VAGRANT do vagrant não é suportada."
 fi
+
+exit
