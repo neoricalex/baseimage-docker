@@ -76,16 +76,17 @@ instalar_requerimentos_para_rodar_vps(){
 		touch .requerimentos.box
 
 		echo "==> Checkando se a box neoricalex/ubuntu existe localmente no $HOSTNAME ..."
-		if ! vagrant box list | grep "neoricalex/ubuntu" > /dev/null; then
+		if ! vagrant box list | grep "neoricalex/ubuntu" > /dev/null; 
+		then
 			echo "==> Checkando se o download da box já foi feito..."
 			if [ ! -f "../boxes/virtualbox.box" ]; 
 			then
 				echo "Iniciando o download..."
-				cd vagrant-libs
+				cd ../boxes/
 				wget https://vagrantcloud.com/ubuntu/boxes/focal64/versions/20210320.0.0/providers/virtualbox.box \
 					-q --show-progress \
 					--progress=bar:force:noscroll
-				cd ..
+				cd ../vps
 			fi
 			echo "==> O download da box já foi feito."
 
