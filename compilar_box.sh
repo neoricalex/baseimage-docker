@@ -22,8 +22,8 @@ instalar_vagrant(){
     vagrant plugin install vagrant-disksize # Só funciona no Virtualbox
     vagrant plugin install vagrant-mutate
 }
-checkar_box(){
-	echo "==> Checkando se a box existe localmente..."
+checkar_vps(){
+	echo "==> Checkando se a box neoricalex/ubuntu existe localmente no $HOSTNAME ..."
 	if vagrant cloud search neoricalex/ubuntu | grep "No results found" > /dev/null; then
 		echo "==> Checkando se o download da box já foi feito..."
 		if [ ! -f "vagrant-libs/virtualbox.box" ]; 
@@ -35,15 +35,15 @@ checkar_box(){
 				--progress=bar:force:noscroll
 			cd ..
 		fi
-		echo "==> O download da box já foi feito!"
+		echo "==> O download da box já foi feito."
 	fi
-	echo "==> A box existe!"
+	echo "==> A box existe no $HOSTNAME"
 }
-provisionar_box(){
+provisionar_vps(){
     VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant up
     VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant reload
 }
-iniciar_box(){
+iniciar_vps(){
     VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant ssh <<EOF
 #!/bin/bash
 
@@ -52,17 +52,17 @@ make iso
 cd ..
 EOF
 }
-instalar_requerimentos_para_rodar_box(){
-	echo "==> Instalar os requerimentos da box..."
+instalar_requerimentos_para_rodar_vps(){
+	echo "==> Instalar os requerimentos para rodar o VPS_DEV..."
 	if [ ! -f ".requerimentos.box" ]; 
 	then
 		echo "==> Atualizar os repositórios..."
 		sudo apt update
 
-		echo "==> Instalar Linux/Ubuntu base..."
+		echo "==> Instalar o Linux/Ubuntu base..."
 		sudo apt-get install linux-generic linux-headers-`uname -r` ubuntu-minimal dkms -y
 
-		echo "==> Instalar libvrt & KVM (REF: https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml)"
+		echo "==> Instalar libvrt & KVM" # REF: https://github.com/alvistack/ansible-role-virtualbox/blob/master/.travis.yml
 		sudo apt install -y bridge-utils dnsmasq-base ebtables libvirt-daemon-system libvirt-clients \
 			libvirt-dev qemu-kvm qemu-utils qemu-user-static ruby-dev \
 			ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev
@@ -94,16 +94,16 @@ instalar_requerimentos_para_rodar_box(){
 	fi
 }
 
-instalar_requerimentos_para_rodar_box
+instalar_requerimentos_para_rodar_vps
 
-echo "==> Iniciando a box..."
+echo "==> Iniciando o VPS_DEV..."
 
 if vagrant status | grep "not created" > /dev/null; then
-	checkar_box
-    provisionar_box
-    iniciar_box
+	checkar_vps
+    provisionar_vps
+    iniciar_vps
 elif vagrant status | grep "is running" > /dev/null; then
-    iniciar_box
+    iniciar_vps
 else
     echo "[DEBUG] O VPS_DEV existe mas está com um status diferente..."
     vagrant status
@@ -114,7 +114,6 @@ usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
 if [ "$usuario" == "neo@desktop" ]; then
 
 	if vagrant cloud search neoricalex/ubuntu | grep "No results found" > /dev/null; then
-		exit
 		#vagrant cloud auth login
 		vagrant cloud publish \
 		--box-version $NFDOS_VERSAO \
