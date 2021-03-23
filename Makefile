@@ -31,8 +31,8 @@ iso:
 	./compilar_iso.sh
 
 box:
-	chmod +x criar_box.sh
-	./criar_box.sh
+	chmod +x compilar_box.sh
+	./compilar_box.sh
 
 build:
 	./build.sh

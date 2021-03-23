@@ -15,3 +15,5 @@ nfdos/desktop/libvirt
 nfdos/desktop/packer_cache
 nfdos/desktop/vagrant
 nfdos/desktop/virtualbox
+
+vagrant-libs/*.box
