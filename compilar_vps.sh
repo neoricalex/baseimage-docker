@@ -157,7 +157,8 @@ echo "==> Entrando no neoricalex/ubuntu (VPS_DEV)..."
 VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant ssh<<EOF
 #!/bin/bash
 cd /vagrant
-echo "Parece bom!" 
+make iso
+cd .. 
 EOF
 
 echo "==> A compilação do VPS_DEV foi concluída com sucesso!"
