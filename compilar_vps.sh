@@ -107,10 +107,9 @@ provisionar_vps(){
 #!/bin/bash
 
 echo "Inserindo a Chave SSH Pública..."
-rm ~/.ssh/authorized_keys
 echo "ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEA6NF8iallvQVp22WDkTkyrtvp9eWW6A8YVr+kz4TjGYe7gHzIw+niNltGEFHzD8+v1I2YJ6oXevct1YeS0o9HZyN1Q9qgCgzUFtdOKLv6IedplqoPkcmF0aYet2PkEDo3MlTBckFXPITAMzF8dJSIFo9D8HfdOV0IAdx4O7PtixWKn5y2hMNG0zQPyUecp4pzC6kivAIhyfHilFR61RGL+GPXQ2MWZWFYbAGjyiYJnAmCP3NOTd0jMZEnDkbUvxhMmBYSdETk1rRgm+R4LOzFUGaHqHDLKLX+FIPKcF96hrucXzcWyLbIbEgE98OHlnVYCzRdK8jlqm8tehUc9c9WhQ== vagrant insecure public key" > ~/.ssh/authorized_keys
-find ~/.ssh/ -type d -exec chmod 0700 {} \;
-find ~/.ssh/ -type f -exec chmod 0600 {} \;
+find ~/.ssh -type d -exec chmod 0700 {} \;
+find ~/.ssh -type f -exec chmod 0600 {} \;
 
 echo "Limpando..."
 sudo apt-get clean -y 
@@ -130,18 +129,21 @@ EOF
 					neoricalex/ubuntu 0.0.2 virtualbox \
 					vagrant-libs/vps_dev.box # --force --debug
 				vagrant cloud auth logout
-				VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant destroy -f
-				vagrant box remove ubuntu/focal64 --provider virtualbox
 			else
-				echo "[DEBUG] Para enviar para a Vagrant Cloud tem que ter as credenciais. Continuando..."
+				echo "[DEBUG] Para enviar a vagrant-libs/vps_dev.box para a Vagrant Cloud tem que ter as credenciais. Continuando..."
 			fi
-			
+
+			echo "==> Excluir o VPS_DEV baseado no ubuntu/focal64 pois não é mais necessário..."
+			VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant destroy -f
+			vagrant box remove ubuntu/focal64 --provider virtualbox
+
+
 		fi
 		echo "==> A vagrant-libs/vps_dev.box foi gerada."
-
-		echo "==> Provisionando a neoricalex/ubuntu (VPS_DEV)..."
+		echo "==> O VPS_DEV baseado no neoricalex/ubuntu está pronto para ser executado."
+		echo "==> Provisionando o neoricalex/ubuntu (VPS_DEV)..."
 		VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
-		echo "==> Reiniciando a neoricalex/ubuntu (VPS_DEV) para as configurações ficarem ativas..."
+		echo "==> Reiniciando o neoricalex/ubuntu (VPS_DEV) para as configurações ficarem ativas..."
 		VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant reload
 
 	fi
