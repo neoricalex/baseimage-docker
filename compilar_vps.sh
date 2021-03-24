@@ -97,8 +97,10 @@ provisionar_vps(){
 		vps_dev=$(vagrant box list | grep "neoricalex/ubuntu" > /dev/null)
 		if [ $? == "1" ];
 		then
-			echo "Parece bom"
-			#vagrant cloud auth login
+			vagrant cloud auth login
+			vps_dev_cloud=$(vagrant cloud search neoricalex/ubuntu | grep "neoricalex/ubuntu" > /dev/null)
+			echo "$vps_dev_cloud"
+			exit
 			#vagrant cloud publish \
 			#--box-version $NFDOS_VERSAO \
 			#--release \
@@ -107,16 +109,16 @@ provisionar_vps(){
 			#neoricalex/ubuntu $NFDOS_VERSAO virtualbox \
 			#nfdos/desktop/vagrant/NFDOS-$NFDOS_VERSAO.box # --force --debug
 			#vagrant cloud auth logout
+			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
+			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant reload
+			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant ssh<<EOF
+#!/bin/bash
+sudo apt-get clean -y 
+sudo dd if=/dev/zero of=/EMPTY bs=1M
+EOF
+			vagrant package --base neoricalex/ubuntu --output vagrant-libs/vps_dev.box
 		fi
 	fi
-
-
-	exit
-	echo "==> Provisionando o VPS_DEV..."
-    VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
-	echo "==> Reiniciando o VPS_DEV para todas as configurações se tornarem ativas..."
-    VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant reload
-	echo "==> O VPS_DEV foi provisionado."
 }
 
 instalar_requerimentos_para_rodar_vps
