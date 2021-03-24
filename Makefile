@@ -24,7 +24,11 @@ VERSION_ARG ?= $(VERSION)
 
 all: vps
 
-vps: 
+vps: compilar_vps
+
+compilar_vps:
+	chmod +x compilar_vps.sh
+	./compilar_vps.sh
 
 iso:
 	chmod +x compilar_iso.sh
