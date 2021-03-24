@@ -6,6 +6,8 @@
 
 .requerimentos.box
 .requerimentos_iso.box
+.requerimentos_host.box
+.requerimentos_box_base.box
 
 nfdos/core/image
 nfdos/core/rootfs

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "==> Instalar os requerimentos da box..."
-if [ ! -f ".requerimentos.box" ]; 
+if [ ! -f ".requerimentos_box_base.box" ]; 
 then
 	#echo "==> Criar a pasta compartilhada ..."
 	#sudo umount -a -t vboxsf 
@@ -54,5 +54,5 @@ then
 
     echo "==> Removendo pacotes do Ubuntu desnecessários"
     sudo apt autoremove -y
-    touch .requerimentos.box
+    touch .requerimentos_box_base.box
 fi

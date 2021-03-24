@@ -24,7 +24,7 @@ instalar_vagrant(){
 }
 instalar_requerimentos_para_rodar_vps(){
 	echo "==> Instalar os requerimentos para rodar o VPS_DEV..."
-	if [ ! -f ".requerimentos.box" ]; 
+	if [ ! -f ".requerimentos_host.box" ]; 
 	then
 		echo "==> Atualizar os repositórios..."
 		sudo apt update
@@ -61,7 +61,7 @@ instalar_requerimentos_para_rodar_vps(){
 
 		echo "==> Removendo pacotes do Ubuntu desnecessários"
 		sudo apt autoremove -y
-		touch .requerimentos.box
+		touch .requerimentos_host.box
 
 		#echo "==> Checkando se a box neoricalex/ubuntu existe localmente no $HOSTNAME ..."
 		#if ! vagrant box list | grep "neoricalex/ubuntu" > /dev/null; 
