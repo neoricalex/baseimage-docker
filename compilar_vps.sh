@@ -98,7 +98,7 @@ provisionar_vps(){
 		if [ $? == "1" ];
 		then
 			vagrant cloud auth login
-			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant package --base neoricalex/ubuntu --output vagrant-libs/vps_dev.box
+			vagrant package --base VPS_DEV --output vagrant-libs/vps_dev.box
 			exit
 			#vagrant cloud publish \
 			#--box-version $NFDOS_VERSAO \
