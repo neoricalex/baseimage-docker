@@ -11,8 +11,8 @@ Vagrant.configure("2") do |config|
 
 
         vps.vm.provider :libvirt do |domain|
-            domain.memory = 4096
-            domain.cpus = 3
+            domain.memory = 2048
+            domain.cpus = 1
         end
 
         vps.vm.provider :libvirt do |libvirt|
