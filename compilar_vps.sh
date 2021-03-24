@@ -90,24 +90,34 @@ instalar_requerimentos_para_rodar_vps(){
 	echo "==> Os requerimentos para rodar o VPS_DEV foram instalados."
 }
 provisionar_vps(){
+
+	usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
+	if [ "$usuario" == "neo@desktop" ]; 
+	then
+		vps_dev=$(vagrant box list | grep "neoricalex/ubuntu" > /dev/null)
+		if [ $? == "1" ];
+		then
+			echo "Parece bom"
+			#vagrant cloud auth login
+			#vagrant cloud publish \
+			#--box-version $NFDOS_VERSAO \
+			#--release \
+			#--short-description "An Ubuntu-based box for developing an Ubuntu-based GNU/Linux distribution from scratch, coded in Portuguese Language" \
+			#--version-description "Versão inicial" \
+			#neoricalex/ubuntu $NFDOS_VERSAO virtualbox \
+			#nfdos/desktop/vagrant/NFDOS-$NFDOS_VERSAO.box # --force --debug
+			#vagrant cloud auth logout
+		fi
+	fi
+
+
+	exit
 	echo "==> Provisionando o VPS_DEV..."
-    VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant up
+    VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
 	echo "==> Reiniciando o VPS_DEV para todas as configurações se tornarem ativas..."
-    VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant reload
+    VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant reload
+	echo "==> O VPS_DEV foi provisionado."
 }
 
 instalar_requerimentos_para_rodar_vps
 provisionar_vps
-
-usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
-if [ "$usuario" == "neo@desktop1" ]; then
-		vagrant cloud auth login
-		#vagrant cloud publish \
-		#--box-version $NFDOS_VERSAO \
-		#--release \
-		#--short-description "An Ubuntu-based box for developing an Ubuntu-based GNU/Linux distribution from scratch, coded in Portuguese Language" \
-		#--version-description "Versão inicial" \
-		#neoricalex/ubuntu $NFDOS_VERSAO virtualbox \
-		#nfdos/desktop/vagrant/NFDOS-$NFDOS_VERSAO.box # --force --debug
-		vagrant cloud auth logout
-fi
