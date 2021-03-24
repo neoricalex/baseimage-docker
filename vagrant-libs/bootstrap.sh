@@ -35,4 +35,5 @@ service docker restart
 # Add neo user to docker group
 sudo usermod -aG docker neo
 
+# TODO Ainsible Docker Swarm: https://imasters.com.br/devsecops/cluster-de-docker-swarm-com-ansible
 # TODO: REF: https://unix.stackexchange.com/questions/172179/gnome-shell-running-shell-script-after-session-starts
