@@ -94,30 +94,33 @@ provisionar_vps(){
 	usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
 	if [ "$usuario" == "neo@desktop" ]; 
 	then
+
 		vps_dev=$(vagrant box list | grep "neoricalex/ubuntu" > /dev/null)
 		if [ $? == "1" ];
 		then
+
 			if [ ! -f "vagrant-libs/vps_dev.box" ];
 			then
 				VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant up
 				VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant reload
 				VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant ssh<<EOF
 #!/bin/bash
+echo "Limpando..."
 sudo apt-get clean -y 
-sudo dd if=/dev/zero of=/EMPTY bs=1M
 EOF
+
 				vagrant package --base VPS_DEV --output vagrant-libs/vps_dev.box
+				vagrant cloud auth login
+				vagrant cloud publish \
+					--box-version 0.0.1 \
+					--release \
+					--short-description "Um VPS baseado no ubuntu/focal64 para desenvolvimento do projeto NEORICALEX e NFDOS" \
+					--version-description "Versão inicial" \
+					neoricalex/ubuntu "0.0.1" virtualbox \
+					vagrant-libs/vps_dev.box # --force --debug
+				vagrant cloud auth logout
+				
 			fi
-			vagrant cloud auth login
-			exit
-			#vagrant cloud publish \
-			#--box-version $NFDOS_VERSAO \
-			#--release \
-			#--short-description "An Ubuntu-based box for developing an Ubuntu-based GNU/Linux distribution from scratch, coded in Portuguese Language" \
-			#--version-description "Versão inicial" \
-			#neoricalex/ubuntu $NFDOS_VERSAO virtualbox \
-			#nfdos/desktop/vagrant/NFDOS-$NFDOS_VERSAO.box # --force --debug
-			#vagrant cloud auth logout
 		fi
 	fi
 }
