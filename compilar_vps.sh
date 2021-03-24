@@ -89,12 +89,15 @@ instalar_requerimentos_para_rodar_vps(){
 	fi
 	echo "==> Os requerimentos para rodar o VPS_DEV foram instalados."
 }
+provisionar_vps(){
+    VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant up
+    VAGRANT_VAGRANTFILE=Vagrantfile_Virtualbox vagrant reload
+}
 
 instalar_requerimentos_para_rodar_vps
-
+pwd
 usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
-echo "$usuario"
-if [ "$usuario" == "neo@desktop" ]; then
+if [ "$usuario" == "neo@desktop1" ]; then
 		vagrant cloud auth login
 		#vagrant cloud publish \
 		#--box-version $NFDOS_VERSAO \
