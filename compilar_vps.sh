@@ -2,11 +2,11 @@
 
 provisionar_vps(){
 
-	echo "==> Checkar se a neoricalex/ubuntu (VPS_DEV) foi gerada..."
+	echo "==> Checkar se a box do VPS_DEV foi gerada..."
 	vps_dev=$(vagrant box list | grep "neoricalex/ubuntu" > /dev/null)
 	if [ $? == "1" ];
 	then
-		echo "==> Checkar se a box base foi gerada..."
+		echo "==> Checkar se a box base com o Ubuntu foi gerada..."
 		if [ ! -f "vagrant-libs/base.box" ];
 		then
 			echo "==> Provisionando a box base..."
@@ -17,6 +17,7 @@ provisionar_vps(){
 echo "A Box base foi provisionada com sucesso!"
 echo "Continuando..."
 EOF
+
 			echo "==> Reiniciando a box base..."
 			VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant reload
 			echo "==> Empacotando a box base..."
@@ -53,10 +54,10 @@ EOF
 	echo "==> A neoricalex/ubuntu (VPS_DEV) foi gerada."
 
 	echo "==> O VPS_DEV baseado no neoricalex/ubuntu está agora pronto para ser executado."
-	echo "==> Provisionando o neoricalex/ubuntu (VPS_DEV)..."
+	echo "==> Provisionando o VPS_DEV..."
 	#cat vagrant-libs/ssh/neoricalex > ~/.vagrant.d/insecure_private_key
 	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
-	echo "==> Reiniciando o neoricalex/ubuntu (VPS_DEV) para as configurações ficarem ativas..."
+	echo "==> Reiniciando o VPS_DEV para as configurações ficarem ativas..."
 	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant reload
 }
 
