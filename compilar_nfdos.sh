@@ -88,7 +88,7 @@ else
 fi
 
 cd vps
-( echo "2"; ) | VAGRANT_VAGRANTFILE=Vagrantfile.NFDOS vagrant up
+VAGRANT_VAGRANTFILE=Vagrantfile.NFDOS vagrant up --provider=libvirt
 
 
 #echo "==> Instalar Wireguard..."
