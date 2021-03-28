@@ -80,7 +80,12 @@ cd /var/lib/neoricalex
 git pull
 
 cd src
-git clone https://github.com/neoricalex/vps.git
+if [ ! -d "./vps" ]; then
+	git clone https://github.com/neoricalex/vps.git
+else
+	sudo rm -rf vps
+	git clone https://github.com/neoricalex/vps.git
+fi
 
 cd vps
 VAGRANT_VAGRANTFILE=Vagrantfile.NFDOS vagrant up
