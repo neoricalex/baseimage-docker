@@ -90,7 +90,10 @@ git pull
 #vagrant box remove ubuntu/focal64 --all
 #vagrant box list
 
-vboxmanage list vms
+vboxmanage unregistervm vps_VPS_1616953739320_44831 --delete
+vboxmanage unregistervm vps_VPS_1616954776448_72534 --delete
+vboxmanage unregistervm vps_VPS_1616955095637_27730 --delete
+vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
 
 #echo "==> Instalar Wireguard..."
 #apt install wireguard -y
