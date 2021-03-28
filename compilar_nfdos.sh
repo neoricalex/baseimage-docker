@@ -68,32 +68,21 @@ compilar_vps_remoto(){
 	#virsh vol-delete --pool default NEORICALEX_NFDOS-vdb.qcow2
 	#virsh vol-delete --pool default NEORICALEX_NFDOS.img
 	#virsh vol-list default
-	#vagrant destroy -f
-	
+	vagrant destroy -f
+	echo "==> Provisionando o NFDOS..."
     vagrant up --provider=libvirt
+	echo "==> Entrando no NFDOS..."
     vagrant ssh <<EOF
 #!/bin/bash
 
-sudo chown -R neo:neo /var/lib/neoricalex
+echo "$USER@$HOSTNAME"
+sudo chown -R $USER:$USER /var/lib/neoricalex
 
 cd /var/lib/neoricalex
 git pull
 
 cd /var/lib/neoricalex/src/vps
 git pull
-
-#echo "$USER@$HOSTNAME"
-#virsh vol-list default
-#virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
-#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
-#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
-
-#vagrant box remove ubuntu/focal64 --all
-#vagrant box list
-
-#vboxmanage controlvm vps_VPS_1616955616906_88956 poweroff
-#vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
-vboxmanage list vms
 
 #echo "==> Instalar Wireguard..."
 #apt install wireguard -y
@@ -109,6 +98,18 @@ vboxmanage list vms
 # sudo sed -i -e "\\#PasswordAuthentication yes# s#PasswordAuthentication yes#PasswordAuthentication no#g" /etc/ssh/sshd_config
 # sudo systemctl restart sshd.service
 # echo "finished"
+
+#virsh vol-list default
+#virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
+#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
+#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
+
+#vagrant box remove ubuntu/focal64 --all
+#vagrant box list
+
+#vboxmanage controlvm vps_VPS_1616955616906_88956 poweroff
+#vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
+#vboxmanage list vms
 
 echo ""
 echo "O NFDOS foi compilado com Sucesso!"
