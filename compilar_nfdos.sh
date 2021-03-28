@@ -80,6 +80,7 @@ cd /var/lib/neoricalex
 git pull
 
 echo "$USER@$HOSTNAME"
+virsh vol-list default
 
 
 #echo "==> Instalar Wireguard..."
