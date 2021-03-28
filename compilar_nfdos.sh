@@ -81,6 +81,9 @@ git pull
 
 echo "$USER@$HOSTNAME"
 virsh vol-list default
+virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
+virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
+virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
 
 
 #echo "==> Instalar Wireguard..."
