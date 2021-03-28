@@ -79,15 +79,17 @@ sudo chown -R neo:neo /var/lib/neoricalex
 cd /var/lib/neoricalex
 git pull
 
+cd /var/lib/neoricalex/src/vps
+git pull
+
 #echo "$USER@$HOSTNAME"
 #virsh vol-list default
 #virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
 #virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
 #virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
 
-cat /var/lib/neoricalex/src/vps/Vagrantfile.NFDOS
-#vagrant box remove ubuntu/focal64 --all
-#vagrant box list
+vagrant box remove ubuntu/focal64 --all
+vagrant box list
 
 #echo "==> Instalar Wireguard..."
 #apt install wireguard -y
