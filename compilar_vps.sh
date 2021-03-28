@@ -43,8 +43,8 @@ EOF
 			VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant destroy -f
 			vagrant box remove ubuntu/focal64 --provider virtualbox
 
-			echo "==> Excluir também a vagrant-libs/base.box para liberarmos espaço em disco? (sim)"
-			rm vagrant-libs/base.box
+			#echo "==> Excluir também a vagrant-libs/base.box para liberarmos espaço em disco..."
+			#rm vagrant-libs/base.box
 
 
 		fi

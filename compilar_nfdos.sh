@@ -79,20 +79,7 @@ sudo chown -R neo:neo /var/lib/neoricalex
 cd /var/lib/neoricalex
 git pull
 
-cd src
-if [ ! -d "./vps" ]; then
-	git clone https://github.com/neoricalex/vps.git
-else
-	sudo rm -rf ./vps
-	git clone https://github.com/neoricalex/vps.git
-fi
-
-cd vps
-
-echo "==> Instalar plugins do Vagrant"
-vagrant plugin install vagrant-libvirt
-
-VAGRANT_VAGRANTFILE=Vagrantfile.NFDOS vagrant up --provider=libvirt
+echo "$USER@$HOSTNAME"
 
 
 #echo "==> Instalar Wireguard..."
