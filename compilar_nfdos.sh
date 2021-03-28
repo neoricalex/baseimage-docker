@@ -83,12 +83,12 @@ cd src
 if [ ! -d "./vps" ]; then
 	git clone https://github.com/neoricalex/vps.git
 else
-	sudo rm -rf vps
-	git clone https://github.com/neoricalex/vps.git
+	cd vps
+	git pull
 fi
 
 cd vps
-VAGRANT_VAGRANTFILE=Vagrantfile.NFDOS vagrant up
+( echo "2"; ) | VAGRANT_VAGRANTFILE=Vagrantfile.NFDOS vagrant up
 
 
 #echo "==> Instalar Wireguard..."
