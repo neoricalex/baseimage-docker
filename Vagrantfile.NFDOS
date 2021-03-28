@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
     config.vm.define :VPS do |vps|
 		vps.vm.box = "ubuntu/focal64"
 		vps.vm.box_version = "20210320.0.0"
-		vps.vm.hostname = "vps"
+		#vps.vm.hostname = "vps"
 		#vps.vm.box_url = "nfdos/desktop/vagrant/libvirt/NFDOS-0.4.4.box"
 		vps.vm.network :public_network, :dev => "virbr0", :mode => "bridge", :type => "bridge"
 
@@ -26,6 +26,7 @@ Vagrant.configure("2") do |config|
             libvirt.default_prefix = 'NEORICALEX_NFDOS_'
 			libvirt.nested = true
 			libvirt.machine_arch = "x86_64"
+			#libvirt.host = "vps"
 			#libvirt.machine_virtual_size = "10GB"
 			#libvirt.storage :file, :size => '10G', :bus => 'scsi', :type => 'qcow2', :discard => 'unmap', :detect_zeroes => 'on'
 			libvirt.emulator_path = "/usr/bin/qemu-system-x86_64"
@@ -38,6 +39,7 @@ Vagrant.configure("2") do |config|
 	config.vm.synced_folder "./", "/vagrant", disabled: true
 	config.vm.synced_folder "./", "/nfdos", disabled: true
 
+	config.ssh.pty = true
 	#config.ssh.username = "neo"
 	#config.ssh.password = "neoricalex"
 	# config.ssh.insert_key = true
