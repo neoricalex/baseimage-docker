@@ -87,11 +87,13 @@ git pull
 #virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
 #virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
 #virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
+
 #vagrant box remove ubuntu/focal64 --all
 #vagrant box list
 
-vboxmanage controlvm vps_VPS_1616955616906_88956 poweroff
-vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
+#vboxmanage controlvm vps_VPS_1616955616906_88956 poweroff
+#vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
+vboxmanage list vms
 
 #echo "==> Instalar Wireguard..."
 #apt install wireguard -y
