@@ -88,6 +88,10 @@ else
 fi
 
 cd vps
+
+echo "==> Instalar plugins do Vagrant"
+vagrant plugin install vagrant-libvirt
+
 VAGRANT_VAGRANTFILE=Vagrantfile.NFDOS vagrant up --provider=libvirt
 
 
