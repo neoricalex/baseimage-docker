@@ -12,26 +12,8 @@ then
 	sudo apt-get -y upgrade
 	sudo apt-get -y dist-upgrade
 
-	sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
-	sudo apt-get update
-
 	echo "==> Instalar o Linux/Ubuntu base..."
 	sudo apt-get install linux-generic linux-headers-`uname -r` ubuntu-minimal dkms -y
-
-	echo "==> Instalar pacotes para a criação da imagem ISO..."
-	sudo apt install -y \
-		binutils \
-		debootstrap \
-		squashfs-tools \
-		xorriso \
-		grub-pc-bin \
-		grub-efi-amd64-bin \
-		unzip \
-		mtools \
-		whois \
-		jq \
-		moreutils \
-		make
 
 	echo "==> Instalar pacotes para desenvolvimento geral..."
 	sudo apt-get install -y build-essential checkinstall libreadline-gplv2-dev \
@@ -55,13 +37,6 @@ then
 	sudo vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c
 	rm Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack 
 
-	echo "==> Instalar Packer"
-	versao_packer="1.6.4"
-	wget https://releases.hashicorp.com/packer/${versao_packer}/packer_${versao_packer}_linux_amd64.zip
-	unzip packer_${versao_packer}_linux_amd64.zip
-	sudo mv packer /usr/local/bin 
-	rm packer_${versao_packer}_linux_amd64.zip
-
 	echo "==> Instalar Docker..."
 	sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 	sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -78,11 +53,71 @@ then
 	echo "==> Adicionar o usuário vagrant ao grupo docker"
 	sudo usermod -aG docker vagrant
 
-	echo "==> Instalar Wireguard..."
-	sudo apt install wireguard -y
-	sudo cp /neoricalex/vagrant-libs/ssh/digital-ocean/wireguard/cliente/wg0.conf /etc/wireguard/wg0.conf
-	sleep 10
-	sudo wg-quick up wg0
+	echo "==> Instalar pacotes para a criação da imagem ISO..."
+	sudo apt install -y \
+		binutils \
+		debootstrap \
+		squashfs-tools \
+		xorriso \
+		grub-pc-bin \
+		grub-efi-amd64-bin \
+		unzip \
+		mtools \
+		whois \
+		jq \
+		moreutils \
+		make
+
+	echo "==> Adicionar o grupo kvm"
+	sudo groupadd kvm
+
+	echo "==> Adicionar o usuário vagrant ao grupo kvm"
+	sudo usermod -aG kvm vagrant
+
+	echo "==> Instalar os pacotes do kvm"
+	sudo apt install -y qemu-system qemu qemu-kvm qemu-utils qemu-block-extra \
+						libvirt-daemon libvirt-daemon-system libvirt-clients \
+						cpu-checker libguestfs-tools libosinfo-bin \
+						bridge-utils dnsmasq-base ebtables libvirt-dev ruby-dev \
+						ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev
+
+	sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+	sudo apt-get update
+	sudo apt install -y build-dep #qemu-user-static libvirt-bin 
+
+	echo "==> Adicionar o usuário vagrant ao grupo libvirt"
+	sudo usermod -aG libvirt vagrant
+
+	echo "==> Iniciar o serviço KVM de forma automática"
+	sudo systemctl start libvirtd
+	sudo systemctl enable --now libvirtd
+
+	echo "==> Reiniciar o serviço libvirt"
+	sudo systemctl restart libvirtd.service
+
+	echo "==> Habilitar o IPv4 e IPv6 forwarding"
+	sudo sed -i "/net.ipv4.ip_forward=1/ s/# *//" /etc/sysctl.conf
+	sudo sed -i "/net.ipv6.conf.all.forwarding=1/ s/# *//" /etc/sysctl.conf
+
+	echo "==> Aplicar as mudanças"
+	sudo sysctl -p
+
+	echo "==> Download Vagrant & Instalar"
+	wget -nv https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_x86_64.deb
+	sudo dpkg -i vagrant_2.2.14_x86_64.deb
+	rm vagrant_2.2.14_x86_64.deb
+
+	echo "==> Instalar plugins do Vagrant"
+	vagrant plugin install vagrant-libvirt
+	vagrant plugin install vagrant-disksize # Só funciona no Virtualbox
+	vagrant plugin install vagrant-mutate
+
+	echo "==> Instalar Packer"
+	versao_packer="1.6.4"
+	wget https://releases.hashicorp.com/packer/${versao_packer}/packer_${versao_packer}_linux_amd64.zip
+	unzip packer_${versao_packer}_linux_amd64.zip
+	sudo mv packer /usr/local/bin 
+	rm packer_${versao_packer}_linux_amd64.zip
 
 	echo "==> Remover entradas antigas do kernel na Grub..."
 	# REF: https://askubuntu.com/questions/176322/removing-old-kernel-entries-in-grub

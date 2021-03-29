@@ -31,6 +31,6 @@ nfdos/desktop/packer_cache
 nfdos/desktop/vagrant
 nfdos/desktop/virtualbox
 
-vagrant-libs/vps_dev.box
+vagrant-libs/base.box
 vagrant-libs/ssh/desktop
 vagrant-libs/ssh/digital-ocean

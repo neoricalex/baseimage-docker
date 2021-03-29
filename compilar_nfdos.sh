@@ -75,47 +75,6 @@ compilar_vps_remoto(){
     vagrant ssh <<EOF
 #!/bin/bash
 
-echo "==> Adicionar o grupo kvm"
-sudo groupadd kvm
-
-echo "==> Adicionar o usuário vagrant ao grupo kvm"
-sudo usermod -aG kvm vagrant
-
-echo "==> Instalar os pacotes do kvm"
-sudo apt install -y qemu-system qemu qemu-kvm qemu-utils qemu-block-extra \
-					libvirt-daemon libvirt-daemon-system libvirt-clients \
-					cpu-checker libguestfs-tools libosinfo-bin \
-					bridge-utils dnsmasq-base ebtables libvirt-dev ruby-dev \
-					ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev build-dep 
-					#qemu-user-static libvirt-bin 
-
-echo "==> Adicionar o usuário vagrant ao grupo libvirt"
-sudo usermod -aG libvirt vagrant
-
-echo "==> Iniciar o serviço KVM de forma automática"
-sudo systemctl start libvirtd
-sudo systemctl enable --now libvirtd
-
-echo "==> Reiniciar o serviço libvirt"
-sudo systemctl restart libvirtd.service
-
-echo "==> Habilitar o IPv4 e IPv6 forwarding"
-sudo sed -i "/net.ipv4.ip_forward=1/ s/# *//" /etc/sysctl.conf
-sudo sed -i "/net.ipv6.conf.all.forwarding=1/ s/# *//" /etc/sysctl.conf
-
-echo "==> Aplicar as mudanças"
-sudo sysctl -p
-
-echo "==> Download Vagrant & Instalar"
-wget -nv https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_x86_64.deb
-sudo dpkg -i vagrant_2.2.14_x86_64.deb
-rm vagrant_2.2.14_x86_64.deb
-
-echo "==> Instalar plugins do Vagrant"
-vagrant plugin install vagrant-libvirt
-vagrant plugin install vagrant-disksize # Só funciona no Virtualbox
-vagrant plugin install vagrant-mutate
-
 #virsh vol-list default
 #virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
 #virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
@@ -138,9 +97,10 @@ cd /var/lib/neoricalex/src/vps
 git pull
 
 #echo "==> Instalar Wireguard..."
-#apt install wireguard -y
-#cp src/vps/vagrant-libs/ssh/digital-ocean/wireguard/cliente/wg0.conf /etc/wireguard/wg0.conf
-#wg-quick up wg0
+#sudo apt install wireguard -y
+#sudo cp /neoricalex/vagrant-libs/ssh/digital-ocean/wireguard/cliente/wg0.conf /etc/wireguard/wg0.conf
+#sleep 10
+#sudo wg-quick up wg0
 
 #ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'
 
