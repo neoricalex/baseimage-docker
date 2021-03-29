@@ -1,8 +1,9 @@
 #!/bin/bash
 
-cd /var/lib/neoricalex/src
-
-if [ ! -d "./vps" ]; then
+cd /var/lib/neoricalex
+git pull
+cd src
+if [ ! -d "vps" ]; then
 	git clone https://github.com/neoricalex/vps.git
 else
 	cd vps
