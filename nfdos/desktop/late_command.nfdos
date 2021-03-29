@@ -12,15 +12,12 @@ fi
 
 cd vps/nfdos/desktop
 
-if [ ! -d "/home/neo" ]; then
-	mkdir -p /home/neo
-	mkdir -p /home/neo/.config
-	mkdir -p /home/neo/.config/autostart
+if [ ! -d "/home/neo/.config/autostart" ]; then
+	mkdir -p /home/neo/.config/autostart && cp inicio.desktop $_
 	chown -R neo:neo /home/neo
+else
+	cp inicio.desktop /home/neo/.config/autostart/inicio.desktop
 fi
 
-ls /home/neo
-
-cp inicio.desktop /home/neo/.config/autostart/inicio.desktop
 chmod +x /home/neo/.config/autostart/inicio.desktop /var/lib/neoricalex/src/vps/nfdos/desktop/app/iniciar.sh
 
