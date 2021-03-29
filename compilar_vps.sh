@@ -27,7 +27,7 @@ echo "==> Instalar pacotes para desenvolvimento geral..."
 sudo apt-get install -y build-essential checkinstall libreadline-gplv2-dev \
 	libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev \
 	libbz2-dev libffi-dev python3-pip unzip lsb-release software-properties-common \
-	curl wget git rsync devscripts python-dev python3-venv 
+	curl wget git rsync devscripts python-dev python3-venv make
 
 echo "==> Instalar o VirtualBox"
 echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian focal contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
@@ -121,11 +121,10 @@ vagrant plugin install vagrant-disksize # Só funciona no Virtualbox
 vagrant plugin install vagrant-mutate
 
 echo "==> Instalar Packer"
-versao_packer="1.6.4"
-wget https://releases.hashicorp.com/packer/$versao_packer/packer_$versao_packer_linux_amd64.zip
-unzip packer_$versao_packer_linux_amd64.zip
+wget https://releases.hashicorp.com/packer/1.6.4/packer_1.6.4_linux_amd64.zip
+unzip packer_1.6.4_linux_amd64.zip
 sudo mv packer /usr/local/bin 
-rm packer_$versao_packer_linux_amd64.zip
+rm packer_1.6.4_linux_amd64.zip
 
 echo "==> Remover entradas antigas do kernel na Grub..."
 # REF: https://askubuntu.com/questions/176322/removing-old-kernel-entries-in-grub
@@ -148,11 +147,11 @@ EOF
 			then
 				vagrant cloud auth login
 				vagrant cloud publish \
-					--box-version 0.0.5 \
+					--box-version 0.0.6 \
 					--release \
 					--short-description "Um VPS baseado no ubuntu/focal64 para desenvolvimento do projeto NEORICALEX e NFDOS" \
-					--version-description "Instalar Requerimentos" \
-					neoricalex/ubuntu 0.0.5 virtualbox \
+					--version-description "Adicionar o make" \
+					neoricalex/ubuntu 0.0.6 virtualbox \
 					vagrant-libs/base.box # --force --debug
 				vagrant cloud auth logout
 			else
