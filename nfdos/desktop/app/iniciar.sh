@@ -1,10 +1,14 @@
 #!/bin/bash
 
-echo "==> Instalar Wireguard..."
-sudo apt install wireguard -y
-sudo cp /nfdos/vagrant-libs/ssh/digital-ocean/wireguard/cliente/wg0.conf /etc/wireguard/wg0.conf
-sleep 10
-sudo wg-quick up wg0
+if ! command -v wg &> /dev/null;
+	echo "==> Instalar Wireguard..."
+	sudo apt install wireguard -y
+	sudo cp /nfdos/vagrant-libs/ssh/digital-ocean/wireguard/cliente/wg0.conf /etc/wireguard/wg0.conf
+	sleep 10
+	sudo wg-quick up wg0
+fi
+
+ip a 
 
 exit 
 
