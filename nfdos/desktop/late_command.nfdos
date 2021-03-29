@@ -1,6 +1,18 @@
 #!/bin/bash
 
-cd /var/lib/neoricalex
+cd /var/lib/neoricalex/src
+
+git clone https://github.com/neoricalex/vps.git
+
+cd vps
+
+git pull
+
+ls ./
+
+ls /home/neo/
+
+
 
 #cp inicio.desktop /home/neo/.config/autostart/inicio.desktop
 #chmod +x /home/neo/.config/autostart/inicio.desktop /var/lib/neoricalex/src/vps/nfdos/desktop/app/iniciar.sh
