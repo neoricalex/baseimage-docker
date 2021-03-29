@@ -2,13 +2,15 @@
 
 cd /var/lib/neoricalex
 git pull
-cd src
-if [ ! -d "vps" ]; then
-	git clone https://github.com/neoricalex/vps.git
+
+rm -rf src/vps
+
+if [ ! -d "src/vps" ]; then
+	git submodule add https://github.com/neoricalex/vps.git src/vps
 else
-	cd vps
+	cd src/vps
 	git pull
-	cd ..
+	cd ../..
 fi
 
 cd vps/nfdos/desktop
