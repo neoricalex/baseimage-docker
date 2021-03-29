@@ -97,24 +97,24 @@ resetar_vps(){
     vagrant up --provider=libvirt --provision
 
 	echo "==> [DEBUG] Entrando no NFDOS..."
-    vagrant ssh <<EOF
+    vagrant ssh <<RESETAR_VPS
 #!/bin/bash
 
 cd /var/lib/neoricalex/src/vps/nfdos/desktop/app
 bash iniciar.sh
 
-EOF
+RESETAR_VPS
 }
 
 entrar_vps(){
 	echo "==> Entrando no NFDOS..."
-    vagrant ssh <<EOF
+    vagrant ssh <<ENTRAR_VPS
 #!/bin/bash
 
 cd /var/lib/neoricalex/src/vps/nfdos/desktop/app
 bash iniciar.sh
 
-EOF	
+ENTRAR_VPS
 }
 
 compilar_iso
@@ -139,4 +139,3 @@ else
 	resetar_vps
 
 fi
-
