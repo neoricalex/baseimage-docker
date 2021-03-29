@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
     end
 
 	config.vm.synced_folder "./", "/vagrant", disabled: true
-	config.vm.synced_folder "./", "/nfdos", disabled: true
+	config.vm.synced_folder "./", "/nfdos", disabled: false
 
 	config.ssh.username = "neo"
 	config.ssh.password = "neoricalex"
