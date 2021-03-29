@@ -2,7 +2,7 @@
 
 cd /var/lib/neoricalex/src
 
-if [ ! -d "vps" ]; then
+if [ ! -d "./vps" ]; then
 	git clone https://github.com/neoricalex/vps.git
 else
 	cd vps
