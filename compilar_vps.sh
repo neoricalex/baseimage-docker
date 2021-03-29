@@ -203,15 +203,12 @@ elif VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant status | grep "poweroff" > 
 then
 
 	echo "==> [DEBUG] O VPS_DEV existe mas está com um status de desligado. Ligando o VPS_DEV..."
-	#cat vagrant-libs/ssh/neoricalex > ~/.vagrant.d/insecure_private_key
 	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
 	entrar_vps
 
 elif VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant status | grep "is running" > /dev/null;
 then
-	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant destroy -f
-	vagrant box remove neoricalex/ubuntu
-	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
+	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant reload
 	entrar_vps
 
 else
@@ -219,34 +216,5 @@ else
     echo "==> [DEBUG] O VPS_DEV existe mas está com um status desconhecido."
     VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant status 
 	sleep 5
-
-	exit
-	# TODO: Menu com opções
-	title="Select example"
-	prompt="Pick an option:"
-	options=("A" "B" "C")
-
-	echo "$title"
-	PS3="$prompt "
-	select opt in "${options[@]}" "Quit"; do 
-		case "$REPLY" in
-		1) echo "You picked $opt which is option 1";;
-		2) echo "You picked $opt which is option 2";;
-		3) echo "You picked $opt which is option 3";;
-		$((${#options[@]}+1))) echo "Goodbye!"; break;;
-		*) echo "Invalid option. Try another one.";continue;;
-		esac
-	done
-
-	while opt=$(zenity --title="$title" --text="$prompt" --list \
-					--column="Options" "${options[@]}")
-	do
-		case "$opt" in
-		"${options[0]}") zenity --info --text="You picked $opt, option 1";;
-		"${options[1]}") zenity --info --text="You picked $opt, option 2";;
-		"${options[2]}") zenity --info --text="You picked $opt, option 3";;
-		*) zenity --error --text="Invalid option. Try another one.";;
-		esac
-	done
 
 fi
