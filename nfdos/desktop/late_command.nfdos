@@ -3,7 +3,10 @@
 cd /var/lib/neoricalex
 git pull
 
-rm -rf src/vps
+git rm --cached src/vps
+git rm --cached /var/lib/neoricalex/src/vps
+rm -rf .git/modules/src/vps
+rm -rf .git/modules/var/lib/neoricalex/src/vps
 
 if [ ! -d "src/vps" ]; then
 	git submodule add https://github.com/neoricalex/vps.git src/vps
@@ -13,7 +16,7 @@ else
 	cd ../..
 fi
 
-cd vps/nfdos/desktop
+cd src/vps/nfdos/desktop
 
 if [ ! -d "/home/neo/.config/autostart" ]; then
 	mkdir -p /home/neo/.config/autostart && cp inicio.desktop $_
