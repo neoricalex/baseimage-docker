@@ -16,6 +16,28 @@ provisionar_vps(){
 #!/bin/bash
 
 echo "Atualizar repositórios e pacotes..."
+
+sudo cat <<SCRIPT >/etc/apt/sources.list
+# deb cdrom:[Ubuntu 20.04 LTS _Focal Fossa_ - Release amd64 (20200423)]/ focal main restricted
+
+deb http://br.archive.ubuntu.com/ubuntu/ focal main restricted
+deb http://br.archive.ubuntu.com/ubuntu/ focal-updates main restricted
+
+deb http://br.archive.ubuntu.com/ubuntu/ focal universe
+deb http://br.archive.ubuntu.com/ubuntu/ focal-updates universe
+
+deb http://br.archive.ubuntu.com/ubuntu/ focal multiverse
+deb http://br.archive.ubuntu.com/ubuntu/ focal-updates multiverse
+
+deb http://br.archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse
+
+deb http://archive.canonical.com/ubuntu focal partner
+
+deb http://security.ubuntu.com/ubuntu focal-security main restricted
+deb http://security.ubuntu.com/ubuntu focal-security universe
+deb http://security.ubuntu.com/ubuntu focal-security multiverse
+SCRIPT
+
 sudo apt-get update
 sudo apt-get -y upgrade
 sudo apt-get -y dist-upgrade
@@ -208,8 +230,7 @@ then
 
 elif VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant status | grep "is running" > /dev/null;
 then
-	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant destroy -f
-	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up	
+
 	entrar_vps
 
 else
