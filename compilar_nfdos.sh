@@ -70,7 +70,7 @@ compilar_iso(){
 
 	echo "==> [DEBUG] vagrant box list"
 	vagrant box list
-	vagrant box remove neoricalex/nfdos
+	#vagrant box remove neoricalex/nfdos
 	#vagrant box remove ubuntu/focal64 --all
 
 	echo "==> [DEBUG] virsh vol-list default"
