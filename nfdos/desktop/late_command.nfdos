@@ -2,18 +2,22 @@
 
 cd /var/lib/neoricalex/src
 
-git clone https://github.com/neoricalex/vps.git
+if [ ! -d "vps" ]; then
+	git clone https://github.com/neoricalex/vps.git
+else
+	cd vps
+	git pull
+	cd ..
+fi
 
 cd vps
 
-git pull
+if [ ! -d "/home/neo/.config" ]; then
+	mkdir -p /home/neo/.config
+	mkdir -p /home/neo/.config/autostart
+	chown -R neo:neo /home/neo
+fi
 
-ls ./
-
-ls /home/neo/
-
-
-
-#cp inicio.desktop /home/neo/.config/autostart/inicio.desktop
-#chmod +x /home/neo/.config/autostart/inicio.desktop /var/lib/neoricalex/src/vps/nfdos/desktop/app/iniciar.sh
+cp inicio.desktop /home/neo/.config/autostart/inicio.desktop
+chmod +x /home/neo/.config/autostart/inicio.desktop /var/lib/neoricalex/src/vps/nfdos/desktop/app/iniciar.sh
 
