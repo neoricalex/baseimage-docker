@@ -83,7 +83,7 @@ wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-
 wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 sudo apt-get update
 sudo apt-get install virtualbox-6.1 -y
-sudo apt install -y virtualbox-guest-dkms virtualbox-guest-x11
+sudo apt install -y virtualbox-guest-dkms #virtualbox-guest-x11
 sudo apt install -y virtualbox-guest-additions-iso
 
 echo "==> Instalar o Extension Pack do VirtualBox"

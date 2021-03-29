@@ -57,35 +57,31 @@ compilar_iso(){
 	else
 		echo "A versão $VERSAO_BOX_VAGRANT do vagrant não é suportada."
 	fi
-}
-
-compilar_vps_remoto(){
 
 	# VBoxManage list vms -l | grep -e ^Name: -e ^State | sed s/\ \ //g | cut -d: -f2-
 	#sudo killall vagrant
 	#sudo killall ruby
-	#virsh vol-delete --pool default neoricalex-VAGRANTSLASH-nfdos_vagrant_box_image_0.img
-	#virsh vol-delete --pool default NEORICALEX_NFDOS-vdb.qcow2
-	#virsh vol-delete --pool default NEORICALEX_NFDOS.img
-	#virsh vol-list default
-	#vagrant destroy -f
+
+	virsh vol-list default
+	#virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
+	#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
+	#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
+
+	#vagrant box remove ubuntu/focal64 --all
+	vagrant box list
+
+	#vboxmanage controlvm vps_VPS_1616955616906_88956 poweroff
+	#vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
+	vboxmanage list vms
+}
+
+compilar_vps_remoto(){
+
 	echo "==> Provisionando o NFDOS..."
     vagrant up --provider=libvirt
 	echo "==> Entrando no NFDOS..."
     vagrant ssh <<EOF
 #!/bin/bash
-
-#virsh vol-list default
-#virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
-#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
-#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
-
-#vagrant box remove ubuntu/focal64 --all
-#vagrant box list
-
-#vboxmanage controlvm vps_VPS_1616955616906_88956 poweroff
-#vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
-#vboxmanage list vms
 
 echo "$USER@$HOSTNAME"
 sudo chown -R $USER:$USER /var/lib/neoricalex
@@ -115,5 +111,5 @@ EOF
 }
 
 compilar_iso
-compilar_vps_remoto
+#compilar_vps_remoto
 
