@@ -121,5 +121,5 @@ EOF
 }
 
 compilar_iso
-#compilar_vps_remoto
+compilar_vps_remoto
 

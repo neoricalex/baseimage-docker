@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
 
         vps.vm.provider :libvirt do |domain|
 			domain.memory = 2048
-			domain.cpus = 2
+			domain.cpus = 1
 			domain.nested = true
 			#domain.disk_driver :cache => 'none'
 			domain.storage :file, :size => '10G', :type => 'qcow2'
