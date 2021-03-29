@@ -87,7 +87,7 @@
     "hostname": "nfdos",
     "http_proxy": "{{env `http_proxy`}}",
     "https_proxy": "{{env `https_proxy`}}",
-    "iso_checksum": "3af1f217336f755e8e03016d6261b2a511f3406b06d681154564b93b5041be39",
+    "iso_checksum": "989295ca0d0ee0e682e579920adcd42e4a6d80d01265a3da7c745762d0f1d0fa",
     "iso_checksum_type": "sha256",
     "iso_name": "nfdos.iso",
     "iso_path": "../core",

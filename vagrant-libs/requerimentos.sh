@@ -12,6 +12,9 @@ then
 	sudo apt-get -y upgrade
 	sudo apt-get -y dist-upgrade
 
+	sudo sed -Ei 's/^# deb-src /deb-src /' /etc/apt/sources.list
+	sudo apt-get update
+
 	echo "==> Instalar o Linux/Ubuntu base..."
 	sudo apt-get install linux-generic linux-headers-`uname -r` ubuntu-minimal dkms -y
 
@@ -34,7 +37,38 @@ then
 	sudo apt-get install -y build-essential checkinstall libreadline-gplv2-dev \
 		libncursesw5-dev libssl-dev libsqlite3-dev tk-dev libgdbm-dev libc6-dev \
 		libbz2-dev libffi-dev python3-pip unzip lsb-release software-properties-common \
-		curl wget git rsync devscripts python-dev python3-venv
+		curl wget git rsync devscripts python-dev python3-venv 
+
+	echo "==> Adicionar o grupo kvm"
+	sudo groupadd kvm
+
+	echo "==> Adicionar o usuário vagrant ao grupo kvm"
+	sudo usermod -aG kvm vagrant
+
+	echo "==> Instalar os pacotes do kvm"
+	sudo apt install -y qemu-system qemu qemu-kvm qemu-utils qemu-block-extra \
+						libvirt-daemon libvirt-daemon-system libvirt-clients \
+						cpu-checker libguestfs-tools libosinfo-bin \
+						bridge-utils dnsmasq-base ebtables libvirt-dev ruby-dev \
+						ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev build-dep 
+						#qemu-user-static libvirt-bin 
+
+	echo "==> Adicionar o usuário vagrant ao grupo libvirt"
+	sudo usermod -aG libvirt vagrant
+
+	echo "==> Iniciar o serviço KVM de forma automática"
+	sudo systemctl start libvirtd
+	sudo systemctl enable --now libvirtd
+
+	echo "==> Reiniciar o serviço libvirt"
+	sudo systemctl restart libvirtd.service
+
+	echo "==> Habilitar o IPv4 e IPv6 forwarding"
+	sudo sed -i "/net.ipv4.ip_forward=1/ s/# *//" /etc/sysctl.conf
+	sudo sed -i "/net.ipv6.conf.all.forwarding=1/ s/# *//" /etc/sysctl.conf
+
+	echo "==> Aplicar as mudanças"
+	sudo sysctl -p
 
 	echo "==> Instalar o VirtualBox"
 	echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian focal contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
@@ -68,37 +102,6 @@ then
 	unzip packer_${versao_packer}_linux_amd64.zip
 	sudo mv packer /usr/local/bin 
 	rm packer_${versao_packer}_linux_amd64.zip
-
-	echo "==> Adicionar o grupo kvm"
-	sudo groupadd kvm
-
-	echo "==> Adicionar o usuário vagrant ao grupo kvm"
-	sudo usermod -aG kvm vagrant
-
-	echo "==> Instalar os pacotes do kvm"
-	sudo apt install -y qemu-system qemu qemu-kvm qemu-utils qemu-block-extra \
-						libvirt-daemon libvirt-daemon-system libvirt-clients \
-						cpu-checker libguestfs-tools libosinfo-bin \
-						bridge-utils dnsmasq-base ebtables libvirt-dev ruby-dev \
-						ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev
-						#qemu-user-static libvirt-bin build-dep
-
-	echo "==> Adicionar o usuário vagrant ao grupo libvirt"
-	sudo usermod -aG libvirt vagrant
-
-	echo "==> Iniciar o serviço KVM de forma automática"
-	sudo systemctl start libvirtd
-	sudo systemctl enable --now libvirtd
-
-	echo "==> Reiniciar o serviço libvirt"
-	sudo systemctl restart libvirtd.service
-
-	echo "==> Habilitar o IPv4 e IPv6 forwarding"
-	sudo sed -i "/net.ipv4.ip_forward=1/ s/# *//" /etc/sysctl.conf
-	sudo sed -i "/net.ipv6.conf.all.forwarding=1/ s/# *//" /etc/sysctl.conf
-
-	echo "==> Aplicar as mudanças"
-	sudo sysctl -p
 
 	echo "==> Instalar Docker..."
 	sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
