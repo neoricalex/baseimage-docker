@@ -60,7 +60,7 @@ compilar_iso(){
 
 	echo "==> [DEBUG] vagrant global-status --prune"
 	vagrant global-status --prune
-	vagrant destroy -f
+	vagrant destroy --name NFDOS -f
 
 	echo "==> [DEBUG] vboxmanage list vms"
 	vboxmanage list vms
