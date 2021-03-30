@@ -1,7 +1,5 @@
 #!/bin/bash
 
-ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'
-
 if [ ! -f "/etc/wireguard/wg0.conf" ]; then
 	echo "==> Instalar Wireguard..."
 	sudo apt install wireguard -y
@@ -9,6 +7,8 @@ if [ ! -f "/etc/wireguard/wg0.conf" ]; then
 	sleep 10
 	sudo wg-quick up wg0
 fi
+
+ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p'
 
 exit 
 
