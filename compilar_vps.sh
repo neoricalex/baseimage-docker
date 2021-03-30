@@ -16,8 +16,8 @@ provisionar_vps(){
 #!/bin/bash
 
 echo "Atualizar repositórios e pacotes..."
-sudo rm /etc/apt/sources.list
-sudo cat <<SCRIPT >>/etc/apt/sources.list
+
+sudo bash -c 'cat > /etc/apt/sources.list' <<REPOSITORIOS
 # deb cdrom:[Ubuntu 20.04 LTS _Focal Fossa_ - Release amd64 (20200423)]/ focal main restricted
 
 deb http://br.archive.ubuntu.com/ubuntu/ focal main restricted
@@ -36,7 +36,7 @@ deb http://archive.canonical.com/ubuntu focal partner
 deb http://security.ubuntu.com/ubuntu focal-security main restricted
 deb http://security.ubuntu.com/ubuntu focal-security universe
 deb http://security.ubuntu.com/ubuntu focal-security multiverse
-SCRIPT
+REPOSITORIOS
 
 sudo apt-get update
 sudo apt-get -y upgrade
