@@ -1,0 +1,9 @@
+{
+    "name": "neoricalex/ubuntu",
+    "versions": [{
+        "version": "X.Y.Z",
+        "providers": [{
+            "url": "base.box"
+        }]
+    }]
+}
