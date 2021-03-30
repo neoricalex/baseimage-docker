@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! command -v wg &> /dev/null;
+if ! $(wg --version) &> /dev/null;
 	echo "==> Instalar Wireguard..."
 	sudo apt install wireguard -y
 	sudo cp /nfdos/vagrant-libs/ssh/digital-ocean/wireguard/cliente/wg0.conf /etc/wireguard/wg0.conf
