@@ -6,13 +6,13 @@ provisionar_vps(){
 	vps_dev=$(vagrant box list | grep "neoricalex/ubuntu" > /dev/null)
 	if [ $? == "1" ];
 	then
-		echo "==> Checkar se a box base com o Ubuntu foi gerada..."
+		echo "==> Checkar se a box base com o Ubuntu - VPS_BASE - foi gerada..."
 		if [ ! -f "vagrant-libs/base.box" ];
 		then
-			echo "==> Provisionando a box base..."
-			#VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant destroy -f
-			VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant up
-			VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant ssh<<EOF
+			echo "==> Provisionando o VPS_BASE..."
+			#VAGRANT_VAGRANTFILE=Vagrantfile.VPS_BASE vagrant destroy -f
+			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_BASE vagrant up
+			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_BASE vagrant ssh<<EOF
 #!/bin/bash
 
 echo "Atualizar repositórios e pacotes..."
@@ -155,13 +155,13 @@ sudo apt-get purge $( dpkg --list | grep -P -o "linux-image-\d\S+" | grep -v $(u
 echo "==> Removendo pacotes desnecessários"
 sudo apt autoremove -y
 
-echo "A Box base foi provisionada com sucesso!"
+echo "O VPS_BASE foi provisionado com sucesso!"
 echo "Continuando..."
 EOF
 
-			echo "==> Reiniciando a box base..."
-			VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant reload
-			echo "==> Empacotando a box base..."
+			echo "==> Reiniciando o VPS_BASE..."
+			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_BASE vagrant reload
+			echo "==> Empacotando o VPS_BASE como VPS_DEV..."
 			vagrant package --base VPS_DEV --output vagrant-libs/base.box
 
 			usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
@@ -180,8 +180,9 @@ EOF
 				echo "[DEBUG] Para enviar a box base para a Vagrant Cloud tem que ter as credenciais. Continuando..."
 			fi
 
+			echo "==> Excluir o VPS_BASE pois não é mais necessário..."
+			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_BASE vagrant destroy -f
 			echo "==> Excluir a box ubuntu/focal64 pois não é mais necessária..."
-			VAGRANT_VAGRANTFILE=Vagrantfile.Ubuntu vagrant destroy -f
 			vagrant box remove ubuntu/focal64 --provider virtualbox
 
 			#echo "==> Excluir também a vagrant-libs/base.box para liberarmos espaço em disco..."
@@ -189,10 +190,10 @@ EOF
 
 
 		fi
-		echo "==> A box base foi gerada."
+		echo "==> O VPS_BASE foi gerado e empacotado como VPS_DEV."
 
 	fi
-	echo "==> A box do VPS_DEV foi gerada."
+	echo "==> O VPS_DEV foi gerado."
 
 	echo "==> O VPS_DEV baseado no neoricalex/ubuntu está agora pronto para ser executado."
 	echo "==> Provisionando o VPS_DEV..."
