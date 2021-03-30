@@ -169,11 +169,11 @@ EOF
 			then
 				vagrant cloud auth login
 				vagrant cloud publish \
-					--box-version 0.0.6 \
+					--box-version 0.0.1 \
 					--release \
 					--short-description "Um VPS baseado no ubuntu/focal64 para desenvolvimento do projeto NEORICALEX e NFDOS" \
-					--version-description "Adicionar o make" \
-					neoricalex/ubuntu 0.0.6 virtualbox \
+					--version-description "Versão inicial" \
+					neoricalex/ubuntu 0.0.1 virtualbox \
 					vagrant-libs/base.box # --force --debug
 				vagrant cloud auth logout
 			else
