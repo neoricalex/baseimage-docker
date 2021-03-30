@@ -16,8 +16,8 @@ provisionar_vps(){
 #!/bin/bash
 
 echo "Atualizar repositórios e pacotes..."
-
-sudo cat <<SCRIPT >/etc/apt/sources.list
+sudo rm /etc/apt/sources.list
+sudo cat <<SCRIPT >>/etc/apt/sources.list
 # deb cdrom:[Ubuntu 20.04 LTS _Focal Fossa_ - Release amd64 (20200423)]/ focal main restricted
 
 deb http://br.archive.ubuntu.com/ubuntu/ focal main restricted
@@ -162,7 +162,7 @@ EOF
 			echo "==> Reiniciando o VPS_BASE..."
 			VAGRANT_VAGRANTFILE=Vagrantfile.VPS_BASE vagrant reload
 			echo "==> Empacotando o VPS_BASE como VPS_DEV..."
-			vagrant package --base VPS_DEV --output vagrant-libs/base.box
+			vagrant package --base VPS_BASE --output vagrant-libs/base.box
 
 			usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
 			if [ "$usuario" == "neo@desktop" ]; 
