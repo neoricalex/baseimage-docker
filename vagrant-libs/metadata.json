@@ -1,9 +1,10 @@
 {
-    "name": "neoricalex/ubuntu",
+    "name": "neoricalex/nfdos",
     "versions": [{
-        "version": "X.Y.Z",
+        "version": "0.4.5",
         "providers": [{
-            "url": "base.box"
+			"name": "libvirt",
+            "url": "file:///path/to/box/virtualbox.box"
         }]
     }]
 }
