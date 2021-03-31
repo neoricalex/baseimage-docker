@@ -104,6 +104,7 @@ then
 		$NFDOS_HOME/desktop/vagrant/$VERSAO_BOX_VAGRANT/NFDOS-$NFDOS_VERSAO.box
 
 	echo "==> Provisionando o NFDOS..."
+	vagrant box list
     vagrant up --provider $VERSAO_BOX_VAGRANT
 	entrar_vps
 
