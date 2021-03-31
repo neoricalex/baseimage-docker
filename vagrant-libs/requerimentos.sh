@@ -1,14 +1,6 @@
 #!/bin/bash
 
 
-sudo usermod -aG kvm vagrant
-sudo usermod -aG libvirt vagrant
-
-sudo chown root:kvm /dev/kvm
-sudo chmod -R 660 /dev/kvm
-sudo systemctl restart libvirtd
-
-
 echo "Atualizar repositórios e pacotes..."
 
 sudo rm /etc/apt/sources.list
@@ -105,8 +97,11 @@ then
 						cpu-checker libguestfs-tools libosinfo-bin \
 						bridge-utils dnsmasq-base ebtables libvirt-dev
 
-	sudo usermod -G -a kvm vagrant
-	sudo usermod -G -a libvirtd vagrant
+	sudo usermod -aG kvm vagrant
+	sudo usermod -aG libvirt vagrant
+
+	sudo chown root:kvm /dev/kvm
+	sudo chmod -R 660 /dev/kvm
 	sudo systemctl restart libvirtd
 fi
 
