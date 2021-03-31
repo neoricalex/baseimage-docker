@@ -58,32 +58,6 @@ compilar_iso(){
 		echo "A versão $VERSAO_BOX_VAGRANT do vagrant não é suportada."
 	fi
 
-	#echo "==> [DEBUG] vagrant global-status --prune"
-	#vagrant global-status --prune
-	#vagrant destroy -f --name NFDOS
-
-	#echo "==> [DEBUG] vboxmanage list vms"
-	#vboxmanage list vms
-	#vboxmanage controlvm vps_VPS_1616955616906_88956 poweroff
-	#vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
-	# VBoxManage list vms -l | grep -e ^Name: -e ^State | sed s/\ \ //g | cut -d: -f2-
-
-	#echo "==> [DEBUG] vagrant box list"
-	#vagrant box list
-	#vagrant box remove neoricalex/nfdos
-	#vagrant box remove ubuntu/focal64 --all
-
-	#echo "==> [DEBUG] virsh vol-list default"
-	#virsh vol-list default
-	#virsh vol-delete --pool default neoricalex-VAGRANTSLASH-nfdos_vagrant_box_image_0.img
-	#virsh vol-delete --pool default NEORICALEX_NFDOS-vdb.qcow2
-	#virsh vol-delete --pool default NEORICALEX_NFDOS.img
-	#virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
-	#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
-	#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
-
-	#sudo killall vagrant
-	#sudo killall ruby
 }
 
 resetar_vps(){
@@ -94,14 +68,13 @@ resetar_vps(){
 	vagrant destroy -f
 
 	echo "==> [DEBUG] Provisionando o NFDOS..."
-    vagrant up --provider=libvirt --provision
+    vagrant up --provider=$VERSAO_BOX_VAGRANT --provision
 
 	echo "==> [DEBUG] Entrando no NFDOS..."
     vagrant ssh <<RESETAR_VPS
 #!/bin/bash
 
-cd /var/lib/neoricalex/src/vps/nfdos/desktop/app
-bash iniciar.sh
+echo "Parece Bom!"
 
 RESETAR_VPS
 }
@@ -114,15 +87,25 @@ entrar_vps(){
 cd /var/lib/neoricalex/src/vps/nfdos/desktop/app
 #bash iniciar.sh
 echo "Parece Bom!"
+$USER@$HOSTNAME
 
 ENTRAR_VPS
 }
 
 if vagrant status | grep "not created" > /dev/null;
 then
+
 	compilar_iso
-	# vagrant box add 
-    vagrant up --provider=libvirt
+
+	echo "==> Adicionar a box neoricalex/nfdos ao Vagrant..."	
+	vagrant box add \
+		--provider $VERSAO_BOX_VAGRANT \
+		--name neoricalex/nfdos \
+		--box-version $NFDOS_VERSAO \
+		$NFDOS_HOME/desktop/vagrant/$VERSAO_BOX_VAGRANT/NFDOS-$NFDOS_VERSAO.box
+
+	echo "==> Provisionando o NFDOS..."
+    vagrant up --provider=$VERSAO_BOX_VAGRANT 
 	entrar_vps
 
 elif vagrant status | grep "is running" > /dev/null;
@@ -135,7 +118,32 @@ else
     echo "==> [DEBUG] O NFDOS existe mas está com um status desconhecido:"
     vagrant status 
 	sleep 5
-    echo "==> [DEBUG] Resetando..."
-	resetar_vps
 
 fi
+
+#echo "==> [DEBUG] vagrant global-status --prune"
+#vagrant global-status --prune
+#vagrant destroy -f --name NFDOS
+
+#echo "==> [DEBUG] vboxmanage list vms"
+#vboxmanage list vms
+#vboxmanage controlvm vps_VPS_1616955616906_88956 poweroff
+#vboxmanage unregistervm vps_VPS_1616955616906_88956 --delete
+# VBoxManage list vms -l | grep -e ^Name: -e ^State | sed s/\ \ //g | cut -d: -f2-
+
+#echo "==> [DEBUG] vagrant box list"
+#vagrant box list
+#vagrant box remove neoricalex/nfdos
+#vagrant box remove ubuntu/focal64 --all
+
+#echo "==> [DEBUG] virsh vol-list default"
+#virsh vol-list default
+#virsh vol-delete --pool default neoricalex-VAGRANTSLASH-nfdos_vagrant_box_image_0.img
+#virsh vol-delete --pool default NEORICALEX_NFDOS-vdb.qcow2
+#virsh vol-delete --pool default NEORICALEX_NFDOS.img
+#virsh vol-delete --pool default generic-VAGRANTSLASH-ubuntu2004_vagrant_box_image_3.2.12.img
+#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS-vdb.qcow2
+#virsh vol-delete --pool default NEORICALEX_NFDOS_VPS.img
+
+#sudo killall vagrant
+#sudo killall ruby

@@ -5,13 +5,16 @@ Vagrant.configure("2") do |config|
 # REF: https://www.rubydoc.info/gems/vagrant-libvirt/0.0.28
 
 	#config.vagrant.plugins = "vagrant-libvirt"
-	config.vm.hostname = "nfdos"
  
     config.vm.define :NFDOS do |vps|
 		vps.vm.box = "neoricalex/nfdos"
 		#vps.vm.box_version = "0.4.4"
-		vps.vm.box_url = "nfdos/desktop/vagrant/libvirt/NFDOS-0.4.5.box"
+		#vps.vm.box_url = "nfdos/desktop/vagrant/libvirt/NFDOS-0.4.5.box"
+		vps.vm.synced_folder "./", "/vagrant", disabled: true
+		#vps.vm.synced_folder "./", "/nfdos", disabled: false
+		vps.vm.hostname = "nfdos"
 		#vps.vm.network :public_network, :dev => "virbr0", :mode => "bridge", :type => "bridge"
+		vps.ssh.pty = true
 
         vps.vm.provider :libvirt do |domain|
 			domain.memory = 2048
@@ -40,18 +43,15 @@ Vagrant.configure("2") do |config|
 
     end
 
-	config.vm.synced_folder "./", "/vagrant", disabled: true
-	config.vm.synced_folder "./", "/nfdos", disabled: false
-
 	config.ssh.username = "neo"
 	config.ssh.password = "neoricalex"
-	# config.ssh.insert_key = true
+	config.ssh.insert_key = false
 	# config.ssh.private_key_path = "./keys/priv.ppk"
 	# config.ssh.keys_only = false
 	#config.ssh.host = 'localhost'
 	
-	config.vm.provision :shell,
-		path: "nfdos/desktop/late_command.nfdos"
+	#config.vm.provision :shell,
+	#	path: "nfdos/desktop/late_command.nfdos"
 
 
 	# Define a Vagrant Push strategy for pushing to Atlas. Other push strategies

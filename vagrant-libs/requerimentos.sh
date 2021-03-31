@@ -113,6 +113,7 @@ then
 
 	sudo chown root:kvm /dev/kvm
 	sudo chmod -R 660 /dev/kvm
+	sudo udevadm control --reload-rules
 	sudo systemctl restart libvirtd
 fi
 
