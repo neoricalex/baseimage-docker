@@ -1,9 +1,16 @@
 #!/bin/bash
 
+echo "==> Gerar e configurar o idioma pt_BR"
 DEBIAN_FRONTEND="teletype" \
     LANG="pt_BR.UTF-8" \
     LANGUAGE="pt_BR:br" \
-    LC_ALL="pt_BR.UTF-8"
+    LC_ALL=$LANG
+
+locale-gen --purge $LANG
+update-locale LANG=$LANG LC_ALL=$LC_ALL LANGUAGE=$LANGUAGE
+
+apt install -y `check-language-support -l pt_BR`
+
 
 echo "Atualizar repositórios e pacotes..."
 
