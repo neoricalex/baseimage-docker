@@ -13,11 +13,7 @@ Vagrant.configure("2") do |config|
 	config.vm.provision "file", source: "vagrant-libs/ssh/insegura/neoricalex.pub", destination: "~/.ssh/authorized_keys"
 
 	config.vm.synced_folder "./", "/vagrant", disabled: true
-	config.vm.synced_folder "./", "/neoricalex", disabled: false, 
-	type: "rsync", rsync__auto: true, rsync__exclude: [
-		'./vagrant-libs/base.box',
-		'./vagrant-libs/ssh/segura*'
-		]
+	config.vm.synced_folder "./", "/neoricalex", disabled: false, type: "rsync", rsync__auto: true, rsync__exclude: ['./vagrant-libs/base.box',	'./vagrant-libs/ssh/segura*']
 	config.vm.network :forwarded_port, guest: 22, host: 1234
 
 	config.vm.provider "virtualbox" do |vb|

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "==> Provisionando o VPS_DEV..."
-VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
+VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up --provision
 
 VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant ssh<<ENTRAR_VPS
 #!/bin/bash
