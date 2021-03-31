@@ -97,15 +97,15 @@ then
 
 	compilar_iso
 
-	echo "==> Adicionar a box neoricalex/nfdos ao Vagrant..."	
+	echo "==> Adicionar a box neoricalex/nfdos ao Vagrant..."
+	vagrant box remove neoricalex/nfdos
 	vagrant box add \
-		--provider $VERSAO_BOX_VAGRANT \
 		--name neoricalex/nfdos \
 		$NFDOS_HOME/desktop/vagrant/$VERSAO_BOX_VAGRANT/NFDOS-$NFDOS_VERSAO.box
 
 	echo "==> Provisionando o NFDOS..."
 	vagrant box list
-    vagrant up --provider $VERSAO_BOX_VAGRANT
+    vagrant up --provider qemu
 	entrar_vps
 
 elif vagrant status | grep "is running" > /dev/null;
