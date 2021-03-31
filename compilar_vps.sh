@@ -1,6 +1,6 @@
 #!/bin/bash
 
-provisionar_vps(){
+criar_vps(){
 
 	echo "==> Checkar se a box do VPS_DEV foi gerada..."
 	vps_dev=$(vagrant box list | grep "neoricalex/ubuntu" > /dev/null)
@@ -64,7 +64,7 @@ EOF
 	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant reload
 }
 
-configurar_vps(){
+provisionar_vps(){
 
 	echo "==> Configurando o VPS_DEV..."
 	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant ssh<<EOF
@@ -174,7 +174,7 @@ echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian focal c
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
 wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
 sudo apt-get update
-sudo apt-get install virtualbox-6.1 virtualbox-guest-dkms virtualbox-guest-additions-iso -y
+sudo apt-get install virtualbox virtualbox-guest-dkms virtualbox-guest-additions-iso -y
 
 echo "==> Instalar o Extension Pack do VirtualBox"
 wget https://download.virtualbox.org/virtualbox/6.1.18/Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack \
@@ -197,17 +197,17 @@ sudo bash -c "echo '{\"experimental\": true}'" > /etc/docker/daemon.json
 sudo cat /etc/docker/daemon.json
 sudo service docker restart
 
-echo "==> Adicionar o usuário $USER ao grupo docker"
-sudo usermod -aG docker $USER
+echo "==> Adicionar o usuário vagrant ao grupo docker"
+sudo usermod -aG docker vagrant
 
 echo "==> Adicionar o grupo kvm"
 sudo groupadd kvm
 
-echo "==> Adicionar o usuário $USER ao grupo kvm"
-sudo usermod -aG kvm $USER
+echo "==> Adicionar o usuário vagrant ao grupo kvm"
+sudo usermod -aG kvm vagrant
 
-echo "==> Adicionar o usuário $USER ao grupo libvirt"
-sudo usermod -aG libvirt $USER
+echo "==> Adicionar o usuário vagrant ao grupo libvirt"
+sudo usermod -aG libvirt vagrant
 
 echo "==> Iniciar o serviço KVM de forma automática"
 sudo systemctl start libvirtd
@@ -224,9 +224,9 @@ echo "==> Aplicar as mudanças"
 sudo sysctl -p
 
 echo "==> Download Vagrant & Instalar"
-wget -nv https://releases.hashicorp.com/vagrant/2.2.14/vagrant_2.2.14_x86_64.deb
-sudo dpkg -i vagrant_2.2.14_x86_64.deb
-rm vagrant_2.2.14_x86_64.deb
+wget -nv https://releases.hashicorp.com/vagrant/2.2.15/vagrant_2.2.15_x86_64.deb
+sudo dpkg -i vagrant_2.2.15_x86_64.deb
+rm vagrant_2.2.15_x86_64.deb
 
 echo "==> Instalar plugins do Vagrant"
 vagrant plugin install vagrant-libvirt
@@ -263,8 +263,8 @@ EOF
 if VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant status | grep "not created" > /dev/null;
 then
 
-    provisionar_vps
-	configurar_vps
+    criar_vps
+	provisionar_vps
 	echo "==> Reiniciando o VPS_DEV..."
 	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant reload
 	entrar_vps

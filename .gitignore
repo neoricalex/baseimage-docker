@@ -32,5 +32,6 @@ nfdos/desktop/vagrant
 nfdos/desktop/virtualbox
 
 vagrant-libs/base.box
+vagrant-libs/ssh/segura
 vagrant-libs/ssh/desktop
 vagrant-libs/ssh/digital-ocean
