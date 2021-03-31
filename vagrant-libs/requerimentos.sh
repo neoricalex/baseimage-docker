@@ -2,7 +2,7 @@
 
 
 sudo usermod -aG kvm vagrant
-sudo usermod -aG libvirtd vagrant
+sudo usermod -aG libvirt vagrant
 
 sudo chown root:kvm /dev/kvm
 sudo chmod -R 660 /dev/kvm
