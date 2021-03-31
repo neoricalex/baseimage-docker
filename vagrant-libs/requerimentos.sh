@@ -1,5 +1,9 @@
 #!/bin/bash
 
+DEBIAN_FRONTEND="teletype" \
+    LANG="pt_BR.UTF-8" \
+    LANGUAGE="pt_BR:br" \
+    LC_ALL="pt_BR.UTF-8"
 
 echo "Atualizar repositórios e pacotes..."
 
