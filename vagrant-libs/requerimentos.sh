@@ -122,6 +122,7 @@ sudo apt-get install -y docker-ce docker-compose
 sudo apt-get remove -y golang-docker-credential-helpers
 sudo curl -L "https://github.com/docker/compose/releases/download/1.25.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo bash -c "echo '{\"experimental\": true}'" > /etc/docker/daemon.json
+sudo cat /etc/docker/daemon.json
 sudo service docker restart
 
 echo "==> Adicionar o usuário $USER ao grupo docker"
