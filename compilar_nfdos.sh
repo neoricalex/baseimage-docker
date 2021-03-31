@@ -123,7 +123,6 @@ if vagrant status | grep "not created" > /dev/null;
 then
 
     vagrant up --provider=libvirt
-	vagrant reload --provider=libvirt
 	entrar_vps
 
 elif vagrant status | grep "is running" > /dev/null;
