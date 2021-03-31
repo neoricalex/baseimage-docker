@@ -84,6 +84,12 @@ sudo apt install -y \
 	make \
 	unzip
 
+echo "==> Instalar os pacotes do kvm"
+sudo apt install -y qemu-system qemu qemu-kvm qemu-utils qemu-block-extra \
+					libvirt-daemon libvirt-daemon-system libvirt-clients \
+					cpu-checker libguestfs-tools libosinfo-bin \
+					bridge-utils dnsmasq-base ebtables libvirt-dev
+
 echo "==> Instalar o VirtualBox"
 echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian focal contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
 wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -

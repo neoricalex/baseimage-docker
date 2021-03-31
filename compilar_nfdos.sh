@@ -121,6 +121,7 @@ ENTRAR_VPS
 if vagrant status | grep "not created" > /dev/null;
 then
 	compilar_iso
+	# vagrant box add 
     vagrant up --provider=libvirt
 	entrar_vps
 
