@@ -1,7 +1,13 @@
 #!/bin/bash
 
+
+sudo usermod -G -a kvm vagrant
+sudo usermod -G -a libvirtd vagrant
+sudo systemctl restart libvirtd
+
 echo "Atualizar repositórios e pacotes..."
 
+sudo rm /etc/apt/sources.list
 sudo bash -c 'cat > /etc/apt/sources.list' <<REPOSITORIOS
 # deb cdrom:[Ubuntu 20.04 LTS _Focal Fossa_ - Release amd64 (20200423)]/ focal main restricted
 
@@ -69,62 +75,80 @@ sudo apt-get -y dist-upgrade
 echo "==> Instalar o Linux/Ubuntu base..."
 sudo apt-get install linux-generic linux-headers-`uname -r` ubuntu-minimal dkms -y
 
-echo "==> Instalar pacotes para a criação da imagem ISO..."
-sudo apt install -y \
-	binutils \
-	debootstrap \
-	squashfs-tools \
-	xorriso \
-	grub-pc-bin \
-	grub-efi-amd64-bin \
-	mtools \
-	whois \
-	jq \
-	moreutils \
-	make \
-	unzip
+if ! command -v unzip &> /dev/null;
+then
+	echo "==> Instalar pacotes para a criação da imagem ISO..."
+	sudo apt install -y \
+		binutils \
+		debootstrap \
+		squashfs-tools \
+		xorriso \
+		grub-pc-bin \
+		grub-efi-amd64-bin \
+		mtools \
+		whois \
+		jq \
+		moreutils \
+		make \
+		unzip
+fi
 
-echo "==> Instalar os pacotes do kvm"
-sudo apt install -y qemu-system qemu qemu-kvm qemu-utils qemu-block-extra \
-					libvirt-daemon libvirt-daemon-system libvirt-clients \
-					cpu-checker libguestfs-tools libosinfo-bin \
-					bridge-utils dnsmasq-base ebtables libvirt-dev
+if ! command -v kvm-ok &> /dev/null;
+then
+	echo "==> Instalar os pacotes do kvm"
+	sudo apt install -y qemu-system qemu qemu-kvm qemu-utils qemu-block-extra \
+						libvirt-daemon libvirt-daemon-system libvirt-clients \
+						cpu-checker libguestfs-tools libosinfo-bin \
+						bridge-utils dnsmasq-base ebtables libvirt-dev
 
-echo "==> Instalar o VirtualBox"
-echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian focal contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
-wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
-wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
-sudo apt-get update
-sudo apt-get install virtualbox -y
-sudo apt install -y virtualbox-guest-dkms #virtualbox-guest-x11
-sudo apt install -y virtualbox-guest-additions-iso
+	sudo usermod -G -a kvm vagrant
+	sudo usermod -G -a libvirtd vagrant
+	sudo systemctl restart libvirtd
+fi
 
-echo "==> Instalar o Extension Pack do VirtualBox"
-wget https://download.virtualbox.org/virtualbox/6.1.18/Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack \
-	-q --show-progress \
-	--progress=bar:force:noscroll
-sudo vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c
-rm Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack 
+if ! command -v vboxmanage &> /dev/null;
+then
+	echo "==> Instalar o VirtualBox"
+	echo "deb [arch=amd64] https://download.virtualbox.org/virtualbox/debian focal contrib" | sudo tee /etc/apt/sources.list.d/virtualbox.list
+	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
+	wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key add -
+	sudo apt-get update
+	sudo apt-get install virtualbox -y
+	sudo apt install -y virtualbox-guest-dkms #virtualbox-guest-x11
+	sudo apt install -y virtualbox-guest-additions-iso
 
-echo "==> Instalar Packer"
-wget https://releases.hashicorp.com/packer/1.6.4/packer_1.6.4_linux_amd64.zip
-unzip packer_1.6.4_linux_amd64.zip
-sudo mv packer /usr/local/bin 
-rm packer_1.6.4_linux_amd64.zip
+	echo "==> Instalar o Extension Pack do VirtualBox"
+	wget https://download.virtualbox.org/virtualbox/6.1.18/Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack \
+		-q --show-progress \
+		--progress=bar:force:noscroll
+	sudo vboxmanage extpack install Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack --accept-license=33d7284dc4a0ece381196fda3cfe2ed0e1e8e7ed7f27b9a9ebc4ee22e24bd23c
+	rm Oracle_VM_VirtualBox_Extension_Pack-6.1.18.vbox-extpack 
+fi 
 
-echo "==> Download Vagrant & Instalar"
-wget -nv https://releases.hashicorp.com/vagrant/2.2.15/vagrant_2.2.15_x86_64.deb
-sudo dpkg -i vagrant_2.2.15_x86_64.deb
-rm vagrant_2.2.15_x86_64.deb
+if ! command -v packer &> /dev/null;
+then
+	echo "==> Instalar Packer"
+	wget https://releases.hashicorp.com/packer/1.6.4/packer_1.6.4_linux_amd64.zip
+	unzip packer_1.6.4_linux_amd64.zip
+	sudo mv packer /usr/local/bin 
+	rm packer_1.6.4_linux_amd64.zip
+fi
 
-echo "==> Instalar requerimentos dos plugins do Vagrant"
-sudo apt install -y build-dep ruby-dev ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev
+if ! command -v vagrant &> /dev/null;
+then
+	echo "==> Download Vagrant & Instalar"
+	wget -nv https://releases.hashicorp.com/vagrant/2.2.15/vagrant_2.2.15_x86_64.deb
+	sudo dpkg -i vagrant_2.2.15_x86_64.deb
+	rm vagrant_2.2.15_x86_64.deb
 
-echo "==> Instalar plugins do Vagrant"
-vagrant plugin install vagrant-libvirt
-vagrant plugin install vagrant-disksize # Só funciona no Virtualbox
-vagrant plugin install vagrant-mutate
-vagrant plugin install vagrant-bindfs
+	echo "==> Instalar requerimentos dos plugins do Vagrant"
+	sudo apt install -y build-dep ruby-dev ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev
 
+	echo "==> Instalar plugins do Vagrant"
+	vagrant plugin install vagrant-libvirt
+	vagrant plugin install vagrant-disksize # Só funciona no Virtualbox
+	vagrant plugin install vagrant-mutate
+	vagrant plugin install vagrant-bindfs
+fi
 echo "==> Removendo pacotes desnecessários"
 sudo apt autoremove -y
