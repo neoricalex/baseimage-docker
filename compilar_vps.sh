@@ -83,10 +83,7 @@ sudo systemctl restart libvirtd
 
 if vagrant plugin list | grep "vagrant-libvirt" > /dev/null;
 then
-	echo "==> Instalar requerimentos dos plugins do Vagrant"
-	sudo apt install -y \
-		ruby-dev ruby-libvirt libxslt-dev libxml2-dev zlib1g-dev libvirt-dev zlib1g-dev
-		
+
 	echo "==> Instalar plugins do Vagrant"
 	# WORKAROUND: Não sei porquê, mas se colocarmos a instalação dos plugins nos requerimentos,
 	#				eles de alguma forma, não ficam "ativos"
@@ -110,7 +107,7 @@ then
 
 elif VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant status | grep "is running" > /dev/null;
 then
-
+	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up --provision
 	entrar_vps
 
 else
