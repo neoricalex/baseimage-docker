@@ -95,18 +95,19 @@ then
 
 	compilar_iso
 
-	vagrant box remove neoricalex/nfdos
+	vagrant mutate $NFDOS_HOME/desktop/vagrant/$VERSAO_BOX_VAGRANT/NFDOS-$NFDOS_VERSAO.box libvirt
 
-	echo "==> Adicionar a box neoricalex/nfdos ao Vagrant..."
-	vagrant box add \
-		--name neoricalex/nfdos \
-		--provider $VERSAO_BOX_VAGRANT \
-		$NFDOS_HOME/desktop/vagrant/$VERSAO_BOX_VAGRANT/NFDOS-$NFDOS_VERSAO.box
+
+	#echo "==> Adicionar a box neoricalex/nfdos ao Vagrant..."
+	#vagrant box add \
+	#	--name neoricalex/nfdos \
+	#	--provider $VERSAO_BOX_VAGRANT \
+	#	$NFDOS_HOME/desktop/vagrant/$VERSAO_BOX_VAGRANT/NFDOS-$NFDOS_VERSAO.box
 
 	echo "==> Provisionando o NFDOS..."
 	vagrant box list
-    vagrant up --provider $VERSAO_BOX_VAGRANT
-	entrar_vps
+    #vagrant up --provider $VERSAO_BOX_VAGRANT
+	#entrar_vps
 
 elif vagrant status | grep "is running" > /dev/null;
 then
