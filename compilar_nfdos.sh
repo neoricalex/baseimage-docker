@@ -151,7 +151,6 @@ $USER@$HOSTNAME
 ENTRAR_VPS
 }
 
-vagrant plugin expunge --reinstall
 
 if vagrant status | grep "not created" > /dev/null;
 then
