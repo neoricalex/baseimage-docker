@@ -175,6 +175,7 @@ then
 else
 
     echo "==> [DEBUG] O NFDOS existe mas está com um status desconhecido:"
+	vagrant plugin expunge --reinstall
     vagrant status 
 	sleep 5
 
