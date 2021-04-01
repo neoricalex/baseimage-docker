@@ -45,7 +45,7 @@ Vagrant.configure("2") do |config|
 
 	config.ssh.username = "neo"
 	config.ssh.password = "neoricalex"
-	config.ssh.insert_key = false
+	#config.ssh.insert_key = false
 	# config.ssh.private_key_path = "./keys/priv.ppk"
 	# config.ssh.keys_only = false
 	#config.ssh.host = 'localhost'
