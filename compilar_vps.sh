@@ -80,8 +80,7 @@ sudo chmod -R 660 /dev/kvm
 sudo udevadm control --reload-rules
 sudo systemctl restart libvirtd
 
-echo "==> [WORKAROUND]: Evitar que a mensagem do update do Vagrant \"quebre\" a continuidade do script..."
-vagrant --version
+vagrant plugin list
 
 if vagrant plugin list | grep "vagrant-libvirt" > /dev/null;
 then
