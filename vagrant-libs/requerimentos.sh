@@ -144,8 +144,7 @@ then
 	sudo mv packer /usr/local/bin 
 	rm packer_1.6.4_linux_amd64.zip
 fi
-sudo apt remove vagrant -y 
-sudo apt autoremove -y
+
 if ! command -v vagrant &> /dev/null;
 then
 	echo "==> Download Vagrant & Instalar"

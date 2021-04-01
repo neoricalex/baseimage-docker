@@ -151,6 +151,8 @@ $USER@$HOSTNAME
 ENTRAR_VPS
 }
 
+vagrant plugin expunge --reinstall
+
 if vagrant status | grep "not created" > /dev/null;
 then
 
@@ -175,8 +177,7 @@ then
 else
 
     echo "==> [DEBUG] O NFDOS existe mas está com um status desconhecido:"
-	vagrant plugin expunge --reinstall
-    vagrant status 
+	vagrant status 
 	sleep 5
 
 fi
