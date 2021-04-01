@@ -157,6 +157,7 @@ $USER@$HOSTNAME
 ENTRAR_VPS
 }
 
+vagrant box remove neoricalex/nfdos
 
 if vagrant status | grep "not created" > /dev/null;
 then
@@ -172,6 +173,27 @@ then
 	echo "==> Provisionando o NFDOS..."
     vagrant up --provider $VERSAO_BOX_VAGRANT
 	limpeza_geral_vps
+
+	echo "==> Enviar a box neoricalex/nfdos para a Vagrant Cloud..."
+	usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
+	if [ "$usuario" == "neo@desktop" ]; 
+	then
+		vagrant package \
+			--base NFDOS \
+			--output $NFDOS_HOME/desktop/vagrant/$VERSAO_BOX_VAGRANT/NFDOS-$NFDOS_VERSAO.box
+		vagrant cloud auth login
+		vagrant cloud publish \
+			--box-version $NFDOS_VERSAO \
+			--release \
+			--short-description "Ubuntu from scratch coded with Portuguese Language" \
+			--version-description "Versão inicial" \
+			neoricalex/nfdos $NFDOS_VERSAO $VERSAO_BOX_VAGRANT \
+			$NFDOS_HOME/desktop/vagrant/$VERSAO_BOX_VAGRANT/NFDOS-$NFDOS_VERSAO.box # --force --debug
+		vagrant cloud auth logout
+	else
+		echo "[DEBUG] Para enviar a box base para a Vagrant Cloud tem que ter as credenciais. Continuando..."
+	fi
+
 	entrar_vps
 
 elif vagrant status | grep "is running" > /dev/null;
