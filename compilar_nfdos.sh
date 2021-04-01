@@ -98,8 +98,7 @@ gnome-shell-extension-desktop-icons gnome-shell-extension-ubuntu-dock \
 gnome-startup-applications gnome-sudoku gnome-system-monitor gnome-terminal \
 gnome-terminal-data gnome-themes-extra gnome-themes-extra-data gnome-todo \
 gnome-todo-common gnome-user-docs gnome-user-docs-ru gnome-video-effects \
-language-pack-gnome-en language-pack-gnome-en-base language-pack-gnome-ru \
-language-pack-gnome-ru-base language-selector-gnome libgail18 libgail18 \
+language-pack-gnome* language-selector-gnome libgail18 libgail18 \
 libgail-common libgail-common libgnome-autoar-0-0 libgnome-bluetooth13 \
 libgnome-desktop-3-19 libgnome-games-support-1-3 libgnome-games-support-common \
 libgnomekbd8 libgnomekbd-common libgnome-menu-3-0 libgnome-todo libgoa-1.0-0b \
@@ -113,9 +112,7 @@ gnome-accessibility-profiles gnome-applets-data gnome-audio gnome-backgrounds \
 gnome-cards-data gnome-common gnome-desktop-testing gnome-dvb-daemon \
 gnome-exe-thumbnailer gnome-extra-icons gnome-flashback-common \
 gnome-humility-icon-theme gnome-hwp-support gnome-icon-theme \
-gnome-icon-theme-gartoon gnome-icon-theme-gartoon-redux \
-gnome-icon-theme-gperfection2 gnome-icon-theme-nuovo gnome-icon-theme-suede \
-gnome-icon-theme-yasis gnome-mime-data gnome-nds-thumbnailer \
+gnome-icon-theme* gnome-mime-data gnome-nds-thumbnailer \
 gnome-packagekit-data gnome-panel-control gnome-panel-data \
 gnome-pkg-tools gnome-recipes-data gnome-remote-desktop gnome-settings-daemon-dev \
 gnome-shell-pomodoro-data gnome-software-common gnome-software-doc \
@@ -135,7 +132,14 @@ sudo apt-get purge ubuntu-gnome-desktop -y
 sudo apt-get purge --auto-remove ubuntu-gnome-desktop -y
 
 sudo apt-get autoremove -y
+sudo apt-get autoclean -y
+sudo apt-get autopurge -y
 
+echo "Nos certificar em como não apagamos coisas \"demais\"..."
+sudo apt install -y linux-generic ubuntu-minimal
+
+echo "E vamos nos certificar em como não existem updates para fazer..."
+sudo apt update && sudo apt upgrade -y
 
 LIMPEZA_VPS
 }
@@ -170,7 +174,7 @@ then
 
 elif vagrant status | grep "is running" > /dev/null;
 then
-
+	limpeza_geral_vps
 	entrar_vps
 
 else
