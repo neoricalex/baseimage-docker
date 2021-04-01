@@ -5,11 +5,6 @@
 *.tar.gz
 *.log
 
-.requerimentos.box
-.requerimentos_iso.box
-.requerimentos_host.box
-.requerimentos_box_base.box
-
 docker/diversos
 docker/duckdns
 docker/email
@@ -26,12 +21,8 @@ nfdos/core/rootfs
 nfdos/core/nfdos.img
 nfdos/core/nfdos.iso
 
-nfdos/desktop/libvirt
 nfdos/desktop/packer_cache
 nfdos/desktop/vagrant
-nfdos/desktop/virtualbox
 
 vagrant-libs/base.box
 vagrant-libs/ssh/segura
-vagrant-libs/ssh/desktop
-vagrant-libs/ssh/digital-ocean
