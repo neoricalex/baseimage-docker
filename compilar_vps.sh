@@ -43,23 +43,6 @@ EOF
 		--provider virtualbox \
 		vagrant-libs/base.box
 
-	echo "==> Enviar a box neoricalex/ubuntu para a Vagrant Cloud..."
-	usuario="$(whoami)@$(hostname | cut -d . -f 1-2)"
-	if [ "$usuario" == "neo@desktop" ]; 
-	then
-		vagrant cloud auth login
-		vagrant cloud publish \
-			--box-version 0.0.1 \
-			--release \
-			--short-description "Um VPS baseado no ubuntu/focal64 para desenvolvimento do projeto NEORICALEX e NFDOS" \
-			--version-description "Versão inicial" \
-			neoricalex/ubuntu 0.0.1 virtualbox \
-			vagrant-libs/base.box # --force --debug
-		vagrant cloud auth logout
-	else
-		echo "[DEBUG] Para enviar a box base para a Vagrant Cloud tem que ter as credenciais. Continuando..."
-	fi
-
 	echo "==> Provisionando o VPS_DEV..."
 	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
 	echo "==> Reiniciando o VPS_DEV para as configurações ficarem ativas..."
