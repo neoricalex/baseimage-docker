@@ -77,7 +77,7 @@ instalar_pacotes_uteis(){
         gnome-session \
         nautilus \
         apt-transport-https \
-        vim \
+		gnome-terminal \
         nano \
         tmux \
         less \

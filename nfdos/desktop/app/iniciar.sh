@@ -1,6 +1,18 @@
-#!/bin/bash
+#!/bin/bash 
 
-echo "Atualizar repositórios e pacotes..."
+touch ~/testado
+
+IP_MSG="$(curl --no-progress-meter http://ifconfig.io 2>&1)"
+STATUS=$? 
+
+if [ $STATUS -ne 0 ]; then
+    MESSAGE="Error Occurred! [ $IP_MSG ]"
+    zenity --notification --window-icon=error --text="$MESSAGE"
+else
+    MESSAGE="My Public IP: $IP_MSG"
+    zenity --info --text="$MESSAGE"
+fi
+echo $MESSAGE
 
 exit
 
@@ -235,3 +247,5 @@ sudo apt autoremove -y
 
 echo ""
 echo "O NFDOS foi compilado com Sucesso!"
+
+
