@@ -159,7 +159,11 @@ echo "O NFDOS foi compilado com Sucesso!"
 sudo chown -R neo:neo /var/lib/neoricalex
 
 cd /var/lib/neoricalex
+git pull
 git submodule update --init --recursive
+
+cd /var/lib/neoricalex/src/vps/
+git pull
 
 cd /var/lib/neoricalex/src/vps/nfdos/desktop/app
 bash iniciar.sh
