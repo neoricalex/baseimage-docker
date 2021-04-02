@@ -164,6 +164,13 @@ sudo chmod -R 660 /dev/kvm
 sudo udevadm control --reload-rules
 sudo systemctl restart libvirtd
 
+echo -e "==> [WORKAROUND]: Instalar plugins do Vagrant. \n Não sei porquê, mas se colocarmos a instalação dos plugins nos requerimentos, eles de alguma forma, não ficam \"ativos\" \n"
+vagrant plugin install vagrant-libvirt
+vagrant plugin install vagrant-vbguest
+#vagrant plugin install vagrant-disksize # Só funciona no Virtualbox
+#vagrant plugin install vagrant-mutate
+#vagrant plugin install vagrant-bindfs
+
 if vagrant status | grep "not created" > /dev/null;
 then
 

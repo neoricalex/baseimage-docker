@@ -37,11 +37,14 @@ EOF
 	fi
 	echo "==> A box do VPS_DEV já foi gerada."
 
-	echo "==> Adicionar a box neoricalex/ubuntu ao Vagrant..."
-	vagrant box add \
-		--name neoricalex/ubuntu \
-		--provider virtualbox \
-		vagrant-libs/base.box
+	if ! vagrant box list | grep "neoricalex/ubuntu" > /dev/null;
+	then
+		echo "==> Adicionar a box neoricalex/ubuntu ao Vagrant..."
+		vagrant box add \
+			--name neoricalex/ubuntu \
+			--provider virtualbox \
+			vagrant-libs/base.box
+	fi
 
 	echo "==> Provisionando o VPS_DEV..."
 	VAGRANT_VAGRANTFILE=Vagrantfile.VPS_DEV vagrant up
