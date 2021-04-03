@@ -1,0 +1,34 @@
+<select class="change fr-dynamic-link-select" id="fr-dynamic-link-list" data-fn="dynamicLinkShortcodeChanged">
+	<# _.each(links, function(group, group_name) { #>
+	<# if(group_name){ #>
+	<optgroup label="<#= group_name #>">
+		<# _.each(group, function(link) { #>
+		<option value="<#= link.url #>" data-shortcode-id="<#= link.id #>" data-compat-id="<#= link.inserted_id #>"><#= link.name #></option>
+		<# }); #>
+	</optgroup>
+
+	<# }else{ #>
+	<# _.each(group, function(link) { #>
+			<# if ( link.show ) { #>
+				<option value="<#= link.url #>" data-shortcode-id="<#= link.id #>"><#= link.label || link.name #></option>
+			<# } #>
+	<# }); #>
+	<# } #>
+	<# }); #>
+</select>
+<# if ( typeof options !== 'undefined' ) { #>
+<# _.each( options, function( item, optionId ) { #>
+<div class="dynamic-extra-opt control-grid mt-15 mb-0" style="display: none" data-show-for="<#-optionId#>">
+	<div class="label"><#-item.label#></div>
+	<div class="input">
+		<# if ( item.type === 'select' ) { #>
+		<select class="dynamic-extra-option" data-field="<#-optionId#>">
+			<# _.each( item.options, function( optLabel, optValue ) { #>
+			<option value="<#-optValue#>"><#-optLabel#></option>
+			<# } ) #>
+		</select>
+		<# } #>
+	</div>
+</div>
+<# } ) #>
+<# } #>
