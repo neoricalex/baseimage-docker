@@ -1,0 +1,17 @@
+.mgm-notice-box{
+	padding: 5px 5px 5px 10px;
+	border:#CCCCCC 1px solid;	
+	text-align:justify;	
+	width:95%;
+	height:auto; 
+	font-style:oblique;	
+	font-size:11px;		
+}
+
+.mgm-notice-header{
+	font-size: 12px;
+	font-weight: bold;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.mgm-notice-box .spinner, .mgm-notice-box .m-waiting{ float: left !important;}

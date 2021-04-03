@@ -1,0 +1,58 @@
+Changes in Modules:
+-------------------
+
+Authorize.net:
+
+	Modified process_notify() in order for listening to Silent Post for ARB SUbscriptions.
+
+	The user will need to set the notify url as the Silent Post Url in Authorize.net Merchant Panel.
+	
+	The Silent Post will contain x_subscription_id if it is an ARB post and function _process_response() will consider
+	 
+	this as the case : 'arb_silent_post'. 
+	
+	Added transaction id as x_invoice_id while creating an ARB subscription and later on x_invoice_id will be captured in Silent Post 
+	
+	to distinguish the transaction.
+	
+Added the field: payment_email to Transaction data
+
+	All modules have been updated to include payment_email and keep updated when there is an email goes out for a successful subscription payment.
+	payment_email field count will be used to prevent sending duplicate Payment Confirmation email.
+	The parent class functions: is_payment_email_sent() and record_payment_email_sent() can be used in modules for checking and updating the email sent count.   	
+
+Worldpay Custom Thank you page changes:
+
+	As Worldpay doesn't support custom Thank you page url redirection, the customer will need to override the default thank you page from Merchant panel.
+	So the payment form has been edited to include a fews custom variables:
+	MC_success: mgm thank you page url
+	MC_error: mgm mgm error page url
+	MC_redirectin : redirecttion in seconds
+	MC_sitename: sitename
+	
+	The customer will need to replace the resultY.html and resultC.html template files on Merchant panel with the contents given in Worldpay Gateway Transaction Success Page Contents: and Worldpay Gateway Transaction Failed Page Contents:
+	in module settings respectively.
+
+	This will show the default Merchant thank you page following a transaction and if not the meta redirection happened, the user will need to click on the mgm thank you page link to return to the site.
+	
+Epoch DataPlus Changes:
+	
+	MGM follows MySQL DB update method for Dataplus.
+	
+	While enabling the module, the below tables will be created:
+	
+	1) EpochTransStats: This table is for storing transaction details.
+	2) MemberCancelStats: This table is for storing subscription cancellation details.
+	(If the tables don't get created, re-enable the module )
+	
+	As per Dataplus, all the transaction details will be logged into the above tables every 15 minutes.
+	
+	Create a DB user with select, insert privileges on the EpochTransStats and MemberCancelStats tables allowing epoch.com ( anywhere from epoch.com ) server to insert into both the tables.
+	Contact epoch.com and enable Dataplus and provide them  with the IP of the database server(host) and the database name(Wordpress DB name) , DB username and the DB password.
+	Also open your firewall to allow epoch.com classes (https://epoch.com/ip_list.php) to connect to the IP/port of your database server that epoch.com will be writing to.
+	
+	Cron:
+	A cron : mgm_quarterhourly_schedule will be running every 15 minutes to check the tables and update user memberships.
+	
+	
+		

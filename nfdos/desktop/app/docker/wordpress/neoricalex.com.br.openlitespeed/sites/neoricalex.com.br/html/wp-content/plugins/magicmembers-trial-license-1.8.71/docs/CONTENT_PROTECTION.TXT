@@ -1,0 +1,39 @@
+content protection processor and shortcode processor preference of execution
+
+
+ level     |   user check | content  check   |   post is purchasable            |  post is not purchasable
+------------------------------------------------------------------------------------------------------------------
+                            [private]     ->    shortcode processor             |  shortcode processor   
+			   login  ->	   
+                            w/o [private] -> 	content protection processor    |  content protection processor  				   
+a) full    |   ---------------------------------------------------------------------------------------------------  
+					        [private]     ->	shortcode processor             |  shortcode processor  			
+               logout ->
+			   			    w/o [private] ->    content protection processor	|  content protection processor 
+------------------------------------------------------------------------------------------------------------------
+						    [private]     ->	shortcode processor             |  shortcode processor 
+			   login  ->	
+			   			    w/o [private] ->    content protection processor 	|  content protection processor 
+b) part    |   ---------------------------------------------------------------------------------------------------
+						    [private]     ->	shortcode processor             |  shortcode processor 
+               logout ->
+			   			    w/o [private] -> 	content protection processor	|  content protection processor 
+------------------------------------------------------------------------------------------------------------------
+						    [private]     ->    shortcode processor             |  shortcode processor             
+			   login  ->	
+			   			    w/o [private] -> 	content protection processor	|  content protection processor 	   
+c) none    |   ---------------------------------------------------------------------------------------------------
+               			    [private]     ->	shortcode processor             |  shortcode processor 
+			   logout ->
+			   			    w/o [private] ->    content protection processor	|  content protection processor 
+			   
+			   
+			   
+			   
+
+			   
+w/o [private] : without	[private] tag in content, auto protect in action		   
+
+processors: there are two processors, 
+            shortcode: when you enter [private] tag in content (or similar [private_or] [private_and] tags )
+			content protection: when no [private] tag is added to content and content is auto protected based on content protectoon level 

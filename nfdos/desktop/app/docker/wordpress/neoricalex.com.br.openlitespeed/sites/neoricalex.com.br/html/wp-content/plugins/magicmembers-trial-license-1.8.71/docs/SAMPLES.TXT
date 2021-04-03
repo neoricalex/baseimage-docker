@@ -1,0 +1,316 @@
+------------------------------------------------------------------
+ Capture custom user fields and update call
+
+------------------------------------------------------------------
+
+// get saved
+$custom_fields = mgm_get_member_custom_fields($user_ID);
+
+// print
+echo '<br>Before<br>';
+mgm_array_dump($custom_fields);
+
+// set , update
+// param@ : user_id
+// param@ : associative array of field=>value pair to update
+$success = mgm_set_member_custom_fields($user_ID, array('country'=>'IN'));
+
+// get saved
+$custom_fields = mgm_get_member_custom_fields($user_ID);
+
+// print
+echo '<br> After<br>';
+mgm_array_dump($custom_fields);
+
+
+----------------------------------------------------
+Update user/member status
+----------------------------------------------------
+
+// get member object, this will onlt work when magicmember is active
+
+if(function_exists('mgm_get_member')){
+	// this will check the usermeta existence and return the saved if so found or create new empty instance of mgm_member class object
+	$member = mgm_get_member($user_id); 
+	// set new status
+	$member->status = MGM_STATUS_EXPIRED; // expired
+	// or active
+	$member->status = MGM_STATUS_ACTIVE; // active
+	// status description
+	$member->status_str = __('Subscription activated manually','mgm'); // active
+	// save
+	$member->save();
+}
+
+----------------------------------------------------
+Update user/member membership type/level
+----------------------------------------------------
+
+// get member object, this will onlt work when magicmember is active
+
+if(function_exists('mgm_get_member')){
+	// this will check the usermeta existence and return the saved if so found or create new empty instance of mgm_member class object
+	$member = mgm_get_member($user_id); 
+	// set new status
+	$member->membership_type = $membership_type_code; // type code, which should be lowercase, spaces removed by underscore(_) type name
+	// save
+	$member->save();
+}
+--------------------------------------------
+Available statuses
+-------------------------------------------
+MGM_STATUS_NULL            = Inactive
+MGM_STATUS_ACTIVE          = Active
+MGM_STATUS_EXPIRED         = Expired
+MGM_STATUS_PENDING         = Pending
+MGM_STATUS_TRIAL_EXPIRED   = Trial Expired
+MGM_STATUS_CANCELLED       = Cancelled
+MGM_STATUS_ERROR           = Error
+MGM_STATUS_AWAITING_CANCEL = Awaiting Cancelled
+---------------------------------------------------
+// update profile first name
+---------------------------------------------------
+global $current_user;
+
+if($current_user->ID > 0) {
+	//first name
+	$_fname = "My First Name " .rand(1,100) ;
+	//update wp default fields
+	wp_update_user( array( 'ID' => $current_user->ID, 'first_name' => $_fname ) );
+	//update MM custom fields
+	mgm_set_member_custom_fields($current_user->ID, array('first_name' => $_fname ));
+}
+
+/**
+* set member custom fields
+*/
+function mgm_set_member_custom_fields($user_id, $custom_fields=array()){
+	
+	if(function_exists('mgm_get_member')){
+		// mgm_member
+		$member = mgm_get_member($user_id);
+		// set fields
+		$member->set_custom_fields($custom_fields, true);// merge
+		// save
+		$member->save();
+		// return
+		return true;
+	}
+}
+---------------------------------------------------
+//  List of active payment gateways for a particular membership level
+---------------------------------------------------
+//init
+$pack_id = 5;
+
+if(function_exists('mgm_get_class')){
+	// get object
+	$packs_obj = mgm_get_class('subscription_packs');
+	//select pack
+	$pack = $packs_obj->get_pack($pack_id);
+	//display modules list i.e active payment gateways list
+	mgm_pr($pack->modules);
+}
+
+---------------------------------------------------
+// Coupon creation
+---------------------------------------------------
+//Ex : 1
+global $wpdb;
+
+$name = substr(md5(uniqid(mt_rand())), 0, 8);
+
+$source = array('name'=>$name);
+
+if(mgm_is_duplicate(TBL_MGM_COUPON, array('name'),'',$source )){
+
+}else {
+	$column_data = array(	'name' => $name,
+							'value' => 10,
+							'description' => 'coupon description',
+							'use_limit' => 1,
+							'product' => '',
+							'expire_dt' => '2014-07-06 00:00:00',
+							'create_dt' => '2014-07-07 11:30:47');
+	
+	//insert
+	$wpdb->insert(TBL_MGM_COUPON, $column_data) ;
+}
+
+//Ex : 2
+global $wpdb;
+
+$name = substr(md5(uniqid(mt_rand())), 0, 8);
+
+$source = array('name'=>$name);
+
+if(mgm_is_duplicate(TBL_MGM_COUPON, array('name'),'',$source )){
+
+}else {
+	$column_data = array(	'name' => $name,
+							'value' => 'sub_pack#12_10_d_member',
+							'description' => 'test',
+							'product' => '{"clickbank_product_id":"","epoch_product_code":""}',
+							'create_dt' => '2014-07-07 11:32:10');
+	//insert
+	$wpdb->insert(TBL_MGM_COUPON, $column_data) ;
+}
+---------------------------------------------------
+$members = mgm_get_members_with('membership_type','vip');
+I'm finding that this returns members who are inactive (never completed registration for the package) or cancelled. Should it return those? Is there a version that only returns active members?
+---------------------------------------------------
+
+
+Ans : No there is no direct version avalible you can get the active members using below example.
+
+Ex :
+
+$vip_members = mgm_get_members_with('membership_type','vip');
+mgm_pr($vip_members);
+
+$active_members =  mgm_get_members_with('status', 'Active');
+mgm_pr($active_members);
+
+$vip_active_members = array_intersect($vip_members, $active_members);
+mgm_pr($vip_active_members);
+
+
+---------------------------------------------------
+// getting users specific membership types status
+---------------------------------------------------
+
+Ex :
+//user id
+$user_id = 158;
+// member free
+$membership_type = 'member';
+//response
+$response = mgm_get_user_membership_status($user_id,$membership_type);
+//display response
+mgm_pr($response);
+
+/**
+* getting users specific membership types status
+*/
+function mgm_get_user_membership_status ($user_id = NULL,$membership_type = NULL) {
+	//check
+	if($user_id !=NULL && $membership_type !=NULL ) {
+		//member obj
+		$member = mgm_get_member($user_id);			
+		//check member
+		if(isset($member->membership_type) && $member->membership_type == $membership_type) {
+			//return
+			return array($member->membership_type=>$member->status);
+		}			
+		// check other
+		if(isset($member->other_membership_types) && is_array($member->other_membership_types) && count($member->other_membership_types) > 0) {
+			// loop
+			foreach ($member->other_membership_types as $key => $memtypes) {
+				// convet
+				if(is_array($memtypes)) {
+					$memtypes = mgm_convert_array_to_memberobj($memtypes,$user_id);
+				}
+				//check
+				if(isset($memtypes->membership_type) && $memtypes->membership_type == $membership_type) {
+					//return
+					return array($memtypes->membership_type=>$memtypes->status);
+				}					
+			}
+		}			
+	}
+	//return
+	return false;
+}
+---------------------------------------------------
+// getting  member using module transaction id 
+---------------------------------------------------
+Ex :
+$module = "mgm_paypal";
+$txn_id = "7A986115KJ762523X";
+$member = mgm_get_member_with_module_transaction_id($module,$txn_id);	
+
+mgm_pr($member);
+
+/**
+* getting  member using module transaction id 
+*/
+function mgm_get_member_with_module_transaction_id($module='',$txn_id=''){
+	//check
+	if(empty($module) || empty($txn_id) ) return false;
+	// members
+	$users    = mgm_get_members_with('payment_module', $module);
+	//loop
+	foreach ($users as $user_id) {
+		//member
+		$member = mgm_get_member($user_id);
+		//check
+		if(isset($member->payment_info->txn_id) && $member->payment_info->txn_id == $txn_id){			
+			//return
+			return $member;
+		
+		}
+		//check other		
+		if (isset($member->other_membership_types) && !empty($member->other_membership_types)) {
+			// loop
+			foreach ($member->other_membership_types as $key => $memtypes) {
+				// convet
+				if(is_array($memtypes)) $memtypes = mgm_convert_array_to_memberobj($memtypes,$user_id);
+				//check
+				if(isset($memtypes->payment_info->txn_id) && $memtypes->payment_info->txn_id == $txn_id){
+					//return
+					return $memtypes;
+				}
+			}				
+		}
+		//unset
+		unset($member);
+	}
+	//return
+	return false;
+}
+---------------------------------------------------
+// getting  all user data 
+---------------------------------------------------
+/**
+ * Fetch all users info
+ */	
+function users_info(){
+	//init
+	$user_info = array();
+	//from cache
+	$uids = wp_cache_get('all_user_ids', 'users');	 
+	//check
+	if(!$uids) {
+		$uids = mgm_get_all_userids();
+		wp_cache_set('all_user_ids', $uids, 'users');
+	}
+	//loop
+	foreach ($uids as $uid) {
+		//store
+		$user_info[]= mgm_get_member($uid);
+	}
+	//return
+	return $user_info;
+}
+
+---------------------------------------------------
+// fetch users info after transaction success
+---------------------------------------------------
+/**
+* Fetch users info after transaction success
+*/
+function fetch_users_info($user_id,$trans_id){
+	//membership info
+	$member = mgm_get_member($user_id);
+	
+	//user info
+	$userdata = get_userdata($user_id);
+	
+	//transaction
+	
+	$transaction_info = mgm_get_transaction($trans_id);
+	
+	//your custom code
+
+}
+add_action( 'mgm_membership_transaction_success', 'fetch_users_info', 10, 2 );

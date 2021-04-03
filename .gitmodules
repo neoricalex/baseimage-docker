@@ -3,4 +3,4 @@
 	url = https://github.com/neoricalex/backend.git
 [submodule "nfdos/desktop/ansible"]
 	path = nfdos/desktop/ansible
-	url = https://github.com/neoricalex/backend.git
+	url = https://github.com/neoricalex/ansible.git
