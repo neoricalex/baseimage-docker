@@ -1,0 +1,210 @@
+#wppr-slider-comment .wppr-comment-form-meta {
+	float: right;
+	position: relative;
+	width: 100%;
+	margin-bottom: 12px;
+}
+
+#wppr-slider-comment .wppr-comment-form-meta label {
+	display: block;
+	float: left;
+	width: 80%;
+	margin: 0;
+	padding: 0;
+	font-size: 14px;
+	line-height: 2;
+}
+
+#wppr-slider-comment .wppr-comment-form-meta .meta_option_input {
+	float: right;
+	width: 12%;
+	min-width: 0;
+	height: 26px;
+	margin: 0;
+	padding: 5px 0 0 0;
+	border: none;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 1.5;
+	text-align: center;
+}
+
+#wppr-slider-comment .wppr-comment-form-meta .wppr-comment-meta-slider {
+	float: left;
+	width: 100%;
+	height: 7px;
+	margin-top: 5px !important;
+	border: none;
+	background: #f3f3f3;
+	box-shadow: inset 0 0 2px rgba(0, 0, 0, 0.3);
+}
+
+#wppr-slider-comment .wppr-comment-form-meta .wppr-comment-meta-slider .ui-slider-handle {
+	top: -4px;
+	left: 5px;
+	width: 13px;
+	height: 13px;
+	border: none;
+	border-radius: 50%;
+	background: #3baeda;
+}
+
+#wppr-slider-comment .wppr-comment-form-meta .wppr-comment-meta-slider .ui-slider-handle:hover {
+	box-shadow: inset 0 0 4px rgba(255, 255, 255, 0.3);
+	cursor: pointer;
+}
+
+#wppr-slider-comment cite.review-info {
+	color: #ddd;
+	font-style: italic !important;
+}
+
+/* User Comment Grades Styles */
+
+.user-comments-grades {
+	float: right;
+	width: 200px;
+	margin: 0 0 20px 15px;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+}
+
+.user-comments-grades * {
+	margin: 0 !important;
+	padding: 0 !important;
+}
+
+.user-comments-grades .comment-meta-option-name {
+	float: left;
+	margin-bottom: 3px !important;
+	color: #7d7d7d;
+	font-size: 10px;
+	text-transform: uppercase;
+}
+
+.user-comments-grades .comment-meta-option-grade {
+	float: right;
+	clear: none !important;
+	font-size: 10px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.user-comments-grades .comment-meta-option {
+	margin-bottom: 10px !important;
+}
+
+.user-comments-grades .comment-meta-option:last-of-type {
+	margin-bottom: 0 !important;
+}
+
+/* Comment Form Meta Options - GRADE BAR */
+
+.comment-meta-option .comment-meta-grade-bar {
+	overflow: hidden;
+	width: 100%;
+	height: 5px;
+	border-radius: 32px;
+	background: #ebedef;
+	box-shadow: none;
+}
+
+.comment-meta-grade {
+	height: 100%;
+}
+
+#wppr-slider-comment {
+	display: block;
+	width: 230px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.wppr-comment-form-meta {
+	width: 100% !important;
+}
+
+.cwpr_clearfix {
+	clear: both !important;
+}
+
+/* Comment Form Meta Options - GRADE BAR */
+
+#wppr-slider-comment .comment-meta-option .comment-meta-grade-bar {
+	overflow: hidden;
+	width: 100%;
+	height: 5px;
+	border-radius: 32px;
+	background: #ebedef;
+	box-shadow: none;
+}
+
+
+.wppr-clear {
+	clear: both;
+	float: none;
+}
+
+#wppr-comment-rating-stars .wppr-comment-rating-star {
+	max-width: 26%;
+}
+#wppr-comment-rating-stars .wppr-comment-rating-star > input { display: none; } 
+#wppr-comment-rating-stars .wppr-comment-rating-star > label:before { 
+	margin: 5px;
+	font-size: 1.25em;
+	font-family: dashicons;
+	display: inline-block;
+	content: "\f155";
+}
+
+#wppr-comment-rating-stars .wppr-comment-rating-star > .half:before { 
+	content: "\f459";
+	position: absolute;
+}
+
+#wppr-comment-rating-stars .wppr-comment-rating-star.rtl > .half:before { 
+	-webkit-transform: rotateY(180deg);
+	-moz-transform: rotateY(180deg);
+	-o-transform: rotateY(180deg);
+	-ms-transform: rotateY(180deg);
+	transform: rotateY(180deg);
+}
+
+#wppr-comment-rating-stars .wppr-comment-rating-star > label { 
+	color: #ddd; 
+	float: right; 
+}
+
+#wppr-comment-rating-stars .wppr-comment-rating-star.rtl > label { 
+	float: left;
+}
+
+/***** CSS Magic to Highlight Stars on Hover *****/
+
+#wppr-comment-rating-stars .wppr-comment-rating-star > input:checked ~ label, /* show gold star when clicked */
+#wppr-comment-rating-stars .wppr-comment-rating-star:not(:checked) > label:hover, /* hover current star */
+#wppr-comment-rating-stars .wppr-comment-rating-star:not(:checked) > label:hover ~ label {
+	color: #FFD700;
+	cursor: pointer;
+} /* hover previous stars in list */
+
+#wppr-comment-rating-stars .wppr-comment-rating-star > input:checked + label:hover, /* hover current star when changing rating */
+#wppr-comment-rating-stars .wppr-comment-rating-star > input:checked ~ label:hover,
+#wppr-comment-rating-stars .wppr-comment-rating-star > label:hover ~ input:checked ~ label, /* lighten current selection */
+#wppr-comment-rating-stars .wppr-comment-rating-star > input:checked ~ label:hover ~ label {
+	color: #FFED85;
+	cursor: pointer;
+}
+
+/*Responsiveness in comments area*/
+@media (max-width: 767px) {
+	.user-comments-grades {
+		float: none;
+		width: 100%;
+		margin: 0 0 20px 0;
+	}
+	#wppr-comment-rating-stars .wppr-comment-rating-star {
+		max-width: 45%;
+	}
+}
